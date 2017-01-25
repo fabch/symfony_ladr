@@ -1,6 +1,7 @@
 <?php
 namespace LADR\SecurityBundle\Model;
 
+use AppBundle\Entity\Access;
 use Doctrine\Common\Collections\Collection;
 
 /**
@@ -12,14 +13,14 @@ interface AccessesSubjectInterface extends \Serializable
     /**
      * Set Accesses
      *
-     * @return Collection|\LADR\SecurityBundle\Entity\Access[]
+     * @return Collection|Access[]
      */
     public function getAccesses();
 
     /**
      * set Accessess
      *
-     * @param Collection|\LADR\SecurityBundle\Entity\Access[] $accesses
+     * @param Collection|Access[] $accesses
      * @return self
      */
     public function setAccesses($accesses);
@@ -27,16 +28,16 @@ interface AccessesSubjectInterface extends \Serializable
     /**
      * add Access
      *
-     * @param \LADR\SecurityBundle\Entity\Access $access
+     * @param Access $access
      * @return self
      */
-    public function addAccess(\LADR\SecurityBundle\Entity\Access $access);
+    public function addAccess(Access $access);
 
     /**
      * remove Access
      *
-     * @param \LADR\SecurityBundle\Entity\Access $access
+     * @param Access $access
      * @return self
      */
-    public function removeAccess(\LADR\SecurityBundle\Entity\Access $access);
+    public function removeAccess(Access $access);
 }
