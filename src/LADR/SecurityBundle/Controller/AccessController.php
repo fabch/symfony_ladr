@@ -26,8 +26,8 @@ class AccessController extends Controller
      */
     public function indexAccessAction(Request $request){
 
-        $accesses = $this->getDoctrine()->getRepository('LADRSecurityBundle:Access')->findAll();
-        return $this->render(':security/access:index.html.twig', array(
+        $accesses = $this->getDoctrine()->getRepository('AppBundle:Access')->findAll();
+        return $this->render('LADRSecurityBundle:Security:login.html.twig', array(
             'accesses'    => $accesses
         ));
     }
@@ -73,7 +73,7 @@ class AccessController extends Controller
             return $this->redirectToRoute('ladr_security_access_index');
         }
 
-        return $this->render(':security/access:form.html.twig', array(
+        return $this->render(':default:form.html.twig', array(
             'form'    => $form->createView()
         ));
     }
@@ -104,7 +104,7 @@ class AccessController extends Controller
             return $this->redirectToRoute('ladr_security_access_index');
         }
 
-        return $this->render(':security/access:form.html.twig', array(
+        return $this->render(':default:form.html.twig', array(
             'form'    => $form->createView()
         ));
 
