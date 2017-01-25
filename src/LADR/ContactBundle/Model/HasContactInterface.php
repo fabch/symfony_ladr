@@ -18,6 +18,6 @@ interface HasContactInterface
      * @param Contact $contact
      * @return self
      */
-    public function setContact($contact);
+    public function setContact(Contact $contact);
 
 }
