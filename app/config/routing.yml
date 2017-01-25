@@ -1,3 +1,7 @@
+ladr_contact:
+    resource: "@LADRContactBundle/Controller/"
+    type:     annotation
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
