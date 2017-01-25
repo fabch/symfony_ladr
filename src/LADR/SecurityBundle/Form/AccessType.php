@@ -3,7 +3,7 @@
 namespace LADR\SecurityBundle\Form;
 
 use Doctrine\ORM\EntityManager;
-use LADR\SecurityBundle\Entity\Access;
+use AppBundle\Entity\Access;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use LADR\SecurityBundle\Model\SecureContactInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
@@ -61,16 +60,16 @@ class AccessType extends AbstractType
         $availablesRoles = $this->getAvailableRoles();
 
         $builder
+            ->add('username', TextType::class)
             ->add('roles', ChoiceType::class, array(
                 'choices'  => array_combine(array_values($availablesRoles), array_values($availablesRoles)),
                 'multiple' => true,
                 'expanded' => false,
                 'required' => true
             ));
-        if (in_array('Register', $options['validations_group'])){
-            $builder
-                ->add('username', TextType::class)
-                ->add('plainPassword', RepeatedType::class, array(
+
+        if (in_array('Create', $options['validations_group'])){
+            $builder->add('plainPassword', RepeatedType::class, array(
                         'type'           => PasswordType::class,
                         'first_options'  => array('label' => 'Password'),
                         'second_options' => array('label' => 'Repeat Password'),

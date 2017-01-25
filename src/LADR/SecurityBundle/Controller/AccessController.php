@@ -27,7 +27,7 @@ class AccessController extends Controller
     public function indexAccessAction(Request $request){
 
         $accesses = $this->getDoctrine()->getRepository('AppBundle:Access')->findAll();
-        return $this->render('LADRSecurityBundle:Security:login.html.twig', array(
+        return $this->render('LADRSecurityBundle:Access:index.html.twig', array(
             'accesses'    => $accesses
         ));
     }
@@ -48,7 +48,7 @@ class AccessController extends Controller
         $form = $this->get('form.factory')->create(AccessType::class, $access, array(
             'action' => $this->generateUrl('ladr_security_access_new'),
             'method' => 'POST',
-            'validations_group' => array('Register')
+            'validations_group' => array('Create')
         ));
         $form->add('submit',SubmitType::class);
         $form->handleRequest($request);
@@ -83,14 +83,14 @@ class AccessController extends Controller
      * Edit access entity
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/accesses/{access}/edit", name="ladr_security_access_edit")
+     * @Route("/accesses/{id}/edit", name="ladr_security_access_edit")
      * @Method({"GET","POST"})
      */
     public function editAccessAction(Request $request, Access $access)
     {
         /** @var Form $form */
         $form = $this->get('form.factory')->create(AccessType::class, $access, array(
-            'action' => $this->generateUrl('ladr_security_access_edit', array('access' => $access->getId())),
+            'action' => $this->generateUrl('ladr_security_access_edit', array('id' => $access->getId())),
             'method' => 'POST'
         ));
         $form->add('submit',SubmitType::class);
@@ -114,13 +114,13 @@ class AccessController extends Controller
      * Deletes a Access entity.
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/accesses/{access}/remove", name="ladr_security_access_remove")
+     * @Route("/accesses/{id}/remove", name="ladr_security_access_remove")
      * @Method({"DELETE"})
      */
     public function removeAccessAction(Request $request, Access $access)
     {
         $form = $this->createFormBuilder()
-            ->setAction($this->generateUrl('ladr_security_access_remove', array('access' => $access->getId())))
+            ->setAction($this->generateUrl('ladr_security_access_remove', array('id' => $access->getId())))
             ->setMethod('DELETE')
             ->getForm()
         ;

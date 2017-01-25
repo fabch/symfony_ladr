@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Contact list</h1>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Roles</th>
+                <th>Createdat</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for access in accesses %}
+            <tr>
+                <td><a href="{{ path('ladr_security_access_edit', { 'id': access.id }) }}">{{ access.id }}</a></td>
+                <td>{{ access.username }}</td>
+                <td>
+                    <ul>
+                        {% for role in access.roles %}
+                        <li>{{ role }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{% if access.createdAt %}{{ access.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ladr_security_access_edit', { 'id': access.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ladr_security_access_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
