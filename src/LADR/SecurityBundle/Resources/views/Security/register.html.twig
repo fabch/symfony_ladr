@@ -1,0 +1,10 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {{ form_start(form) }}
+        {{ form_rest(form) }}
+        <div class="form-group">
+            <input type="submit" class="btn btn-block btn-primary" name="login" value="{{ "Inscription"|trans }}"/>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
