@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="LADR\SecurityBundle\Repository\AccessRepository")
  * @UniqueEntity("username")
  */
-class Access extends AccessAbstract implements AccessInterface, \Serializable
+class Access extends AccessAbstract
 {
     /**
      * @var int

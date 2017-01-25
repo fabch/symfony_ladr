@@ -5,10 +5,10 @@ use AppBundle\Entity\Access;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Interface AccessesSubjectInterface
+ * Interface HasMultipleAccessInterface
  * @package LADR\SecurityBundle\Model
  */
-interface AccessesSubjectInterface extends \Serializable
+interface HasMultipleAccessInterface extends \Serializable
 {
     /**
      * Set Accesses

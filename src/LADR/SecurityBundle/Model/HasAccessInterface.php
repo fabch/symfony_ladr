@@ -1,13 +1,14 @@
 <?php
 namespace LADR\SecurityBundle\Model;
 
+use AppBundle\Entity\Access;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * Interface AccessSubjectInterface
+ * Interface HasAccessInterface
  * @package LADR\SecurityBundle\Model
  */
-interface AccessSubjectInterface extends \Serializable
+interface HasAccessInterface extends \Serializable
 {
 
     /**
@@ -27,15 +28,15 @@ interface AccessSubjectInterface extends \Serializable
     /**
      * Set Access
      *
-     * @return \LADR\SecurityBundle\Entity\Access
+     * @return Access
      */
     public function getAccess();
 
     /**
      * set Access
      *
-     * @param  \LADR\SecurityBundle\Entity\Access $access
+     * @param  Access $access
      * @return self
      */
-    public function setAccess($access);
+    public function setAccess(Access $access);
 }
