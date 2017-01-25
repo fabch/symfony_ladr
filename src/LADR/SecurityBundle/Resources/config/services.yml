@@ -1,0 +1,14 @@
+services:
+
+    ladr.util.username_generator:
+        class: LADR\SecurityBundle\Util\UsernameGenerator
+        arguments: ['@doctrine.orm.entity_manager']
+
+    ladr.util.password_generator:
+        class: LADR\SecurityBundle\Util\PasswordGenerator
+
+    ladr.form.security.access:
+        arguments: ['@doctrine.orm.entity_manager','@security.token_storage', '%security.role_hierarchy.roles%']
+        class: LADR\SecurityBundle\Form\AccessType
+        tags:
+            - { name: form.type }

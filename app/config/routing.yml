@@ -1,3 +1,10 @@
+logout:
+    path: /logout
+
+ladr_security:
+    resource: "@LADRSecurityBundle/Controller/"
+    type:     annotation
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
