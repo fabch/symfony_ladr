@@ -28,7 +28,7 @@ class ContactController extends Controller
 
         $contacts = $em->getRepository('AppBundle:Contact')->findAll();
 
-        return $this->render('LADRContactBundle:contact:index.html.twig', array(
+        return $this->render('LADRContactBundle:Contact:index.html.twig', array(
             'contacts' => $contacts,
         ));
     }

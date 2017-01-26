@@ -19,7 +19,7 @@ interface HasMultipleContactInterface
      * @param Collection|Contact[] $contacts
      * @return self
      */
-    public function setContacts($contacts);
+    public function setContacts(Collection $contacts);
 
     /**
      * Add contact
