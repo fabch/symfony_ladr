@@ -1,1 +1,8 @@
+parameters:
+    ladr.form.contact.class: LADR\ContactBundle\Form\ContactType
+
 services:
+    ladr.form.contact:
+        class: '%ladr.form.contact.class%'
+        tags:
+            - { name: form.type }

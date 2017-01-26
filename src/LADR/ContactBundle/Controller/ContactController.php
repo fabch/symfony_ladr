@@ -4,6 +4,7 @@ namespace LADR\ContactBundle\Controller;
 
 use AppBundle\Entity\Contact;
 
+use LADR\ContactBundle\Form\ContactType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -35,13 +36,13 @@ class ContactController extends Controller
     /**
      * Creates a new Contact entity.
      *
-     * @Route("/contacts/ajouter", name="ladr_contact_new")
+     * @Route("/contacts/add", name="ladr_contact_new")
      * @Method({"GET","POST"})
      */
     public function newAction(Request $request)
     {
         $contact = new Contact();
-        $form = $this->createForm('LADR\ContactBundle\Form\ContactType', $contact);
+        $form = $this->createForm($this->getParameter('ladr.form.contact.class'), $contact);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -52,7 +53,7 @@ class ContactController extends Controller
             return $this->redirectToRoute('ladr_contact_show', array('id' => $contact->getId()));
         }
 
-        return $this->render('LADRContactBundle:contact:new.html.twig', array(
+        return $this->render('LADRContactBundle:Contact:new.html.twig', array(
             'contact' => $contact,
             'form' => $form->createView(),
         ));
@@ -61,14 +62,14 @@ class ContactController extends Controller
     /**
      * Finds and displays a Contact entity.
      *
-     * @Route("/contacts/{id}/visualiser", name="ladr_contact_show")
+     * @Route("/contacts/{id}/show", name="ladr_contact_show")
      * @Method({"GET"})
      */
     public function showAction(Contact $contact)
     {
         $deleteForm = $this->createDeleteForm($contact);
 
-        return $this->render('LADRContactBundle:contact:show.html.twig', array(
+        return $this->render('LADRContactBundle:Contact:show.html.twig', array(
             'contact' => $contact,
             'delete_form' => $deleteForm->createView(),
         ));
@@ -77,13 +78,13 @@ class ContactController extends Controller
     /**
      * Displays a form to edit an existing Contact entity.
      *
-     * @Route("/contacts/{id}/modifier", name="ladr_contact_edit")
+     * @Route("/contacts/{id}/edit", name="ladr_contact_edit")
      * @Method({"GET","POST"})
      */
     public function editAction(Request $request, Contact $contact)
     {
         $deleteForm = $this->createDeleteForm($contact);
-        $editForm = $this->createForm('LADR\ContactBundle\Form\ContactType', $contact);
+        $editForm = $this->createForm($this->getParameter('ladr.form.contact.class'), $contact);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -95,7 +96,8 @@ class ContactController extends Controller
         }
 
         $this->getUser();
-        return $this->render('LADRContactBundle:contact:edit.html.twig', array(
+
+        return $this->render('LADRContactBundle:Contact:edit.html.twig', array(
             'contact' => $contact,
             'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
