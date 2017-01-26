@@ -1,4 +1,8 @@
+parameters:
+    ladr.form.type.collection_duplicate.class: LADR\ToolBundle\Form\Type\LADRCollectionDuplicateType
+
 services:
-#    ladr_tool.example:
-#        class: LADR\ToolBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    ladr.form.type.collection_duplicate:
+        class: '%ladr.form.type.collection_duplicate.class%'
+        tags:
+            - { name: form.type }
