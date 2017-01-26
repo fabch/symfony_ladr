@@ -25,8 +25,7 @@ class RegisterType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class'        => 'LADR\SecurityBundle\Model\AccessInterface',
-            'validation_groups' => array('Register')
+            'data_class'        => 'LADR\SecurityBundle\Model\AccessInterface'
         ));
     }
 }

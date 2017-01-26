@@ -60,7 +60,7 @@ class SecurityController extends Controller
     {
         $access = new Access();
         $access->addRole('ROLE_USER');
-        $form = $this->createForm(RegisterType::class, $access);
+        $form = $this->createForm($this->getParameter('ladr.form.security.register.class'), $access);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
