@@ -1,3 +1,6 @@
+parameters:
+    ladr.form.security.access.class: LADR\SecurityBundle\Form\AccessType
+
 services:
 
     ladr.util.username_generator:
@@ -9,6 +12,6 @@ services:
 
     ladr.form.security.access:
         arguments: ['@doctrine.orm.entity_manager','@security.token_storage', '%security.role_hierarchy.roles%']
-        class: LADR\SecurityBundle\Form\AccessType
+        class: '%ladr.form.security.access.class%'
         tags:
             - { name: form.type }

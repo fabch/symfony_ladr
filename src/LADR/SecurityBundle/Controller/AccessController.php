@@ -3,7 +3,6 @@ namespace LADR\SecurityBundle\Controller;
 
 use AppBundle\Entity\Access;
 
-use LADR\SecurityBundle\Form\AccessType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -45,7 +44,7 @@ class AccessController extends Controller
 
         $access = new Access();
         /** @var Form $form */
-        $form = $this->get('form.factory')->create(AccessType::class, $access, array(
+        $form = $this->createForm($this->getParameter('ladr.form.security.access.class'), $access, array(
             'action' => $this->generateUrl('ladr_security_access_new'),
             'method' => 'POST',
             'validations_group' => array('Create')
@@ -89,7 +88,7 @@ class AccessController extends Controller
     public function editAccessAction(Request $request, Access $access)
     {
         /** @var Form $form */
-        $form = $this->get('form.factory')->create(AccessType::class, $access, array(
+        $form = $this->createForm($this->getParameter('ladr.form.security.access.class'), $access, array(
             'action' => $this->generateUrl('ladr_security_access_edit', array('id' => $access->getId())),
             'method' => 'POST'
         ));
