@@ -1,0 +1,23 @@
+{%- set box = {
+title: 'Ajouter',
+color: 'box-info'
+} -%}
+
+{% extends ':Adminlte:box.html.twig' %}
+
+{% block pre_box -%}
+    {{ form_start(form) }}
+{%- endblock pre_box %}
+
+{% block box_tools -%}
+    {{ parent() }}
+    {{ form(delete_form) }}
+{%- endblock box_tools %}
+
+{% block box_content -%}
+    {{ form(form) }}
+{%- endblock %}
+
+{% block post_box -%}
+    {{ form_end(form) }}
+{%- endblock post_box %}

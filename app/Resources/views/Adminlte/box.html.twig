@@ -1,0 +1,47 @@
+{%- set box = {
+    title: box.title|default(''),
+    color: box.color|default(''),
+    border: box.border|default(true),
+    class: box.class|default(''),
+    expandable: box.expandable|default(false),
+    removable: box.removable|default(false)
+} -%}
+<div class="box {{ box.color|trim }} {{ box.class|trim }}">
+    {% block pre_box %}{% endblock pre_box %}
+
+    {% block box_header %}
+        <div class="box-header {{ box.border ? 'with-border' : '' }}">
+            {% block box_header_content %}
+                <h3 class="box-title">{{ box.title }}</h3>
+                <div class="box-tools pull-right">
+                    {% block box_tools %}
+                        {% if box.expandable %}<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>{% endif %}
+                        {% if box.removable %}<button type="button" class="btn btn-box-tool" title="{{ 'action.delete'|trans }}"><i class="fa fa-times"></i></button>{% endif %}
+                    {% endblock box_tools %}
+                </div>
+            {% endblock box_header_content %}
+        </div>
+        <!-- /.box-header -->
+    {% endblock box_header %}
+
+    {% block box_body %}
+        <div class="box-body">
+            {% block box_content %}
+                <div class="overlay">
+                    <i class="fa fa-refresh fa-spin"></i>
+                </div>
+            {% endblock %}
+        </div>
+        <!-- /.box-body -->
+    {% endblock box_body %}
+
+    {% block box_footer %}
+        <div class="box-footer with-border">
+            {% block box_footer_content %}
+            {% endblock box_footer_content %}
+        </div>
+        <!-- /.box-footer -->
+    {% endblock box_footer %}
+
+    {% block post_box %}{% endblock post_box %}
+</div>

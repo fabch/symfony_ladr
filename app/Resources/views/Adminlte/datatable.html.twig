@@ -1,0 +1,115 @@
+{# bouton de tri asc/desc sur les colonnes du tableau #}
+{% macro listing_sort(route, field, libelle, pagination) -%}
+    {%- spaceless -%}
+        <span>
+            {% set sorted_style = pagination.route_params.field == field ? 'color:#737373;' :'' %}
+            {% if  pagination.route_params.field is defined and pagination.route_params.field == field and pagination.route_params.order == 'asc' %}
+                <a href="{{ path(route, pagination.route_params|merge({'field': field, 'order': 'desc'})) }}" class="listing_link" style="text-decoration:none;white-space: nowrap;{{ sorted_style }}"><i class="glyphicon glyphicon-sort-by-attributes-alt"></i>&nbsp;{{ libelle }}</a>
+			{% else %}
+                <a href="{{ path(route, pagination.route_params|merge({'field': field, 'order': 'asc'})) }}" class="listing_link" style="text-decoration:none;white-space: nowrap;{{ sorted_style }}"><i class="glyphicon glyphicon-sort-by-attributes"></i>&nbsp;{{ libelle }}</a>
+            {% endif %}
+		</span>
+    {%- endspaceless -%}
+{%- endmacro %}
+
+
+{# bouton de sélection du nombre de lignes à afficher dans le listing #}
+{% macro listing_max_row(item_name, route, nb_per_page_array, pagination) -%}
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border-radius:4px;">
+            Afficher : {{ pagination.route_params.maxperpage }} {{ item_name }} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" style="border-radius:4px;">
+            {% for nb_per_page in nb_per_page_array %}
+                <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'maxperpage': nb_per_page, 'page': 1})) }}">{{ nb_per_page }} {{ item_name }}</a></li>
+            {% endfor %}
+            <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'maxperpage': pagination.total, 'page': 1})) }}">Tous</a></li>
+        </ul>
+    </div>
+{%- endmacro %}
+
+{# Bouton de tri des listing #}
+{% macro listing_filter(list_btn) -%}
+    <!-- Single button -->
+    <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="glyphicon glyphicon-cog"></i>
+        </button>
+        <ul class="dropdown-menu">
+            {% for btn in list_btn %}
+                {% if btn.attr is defined %}
+                    <li><a href="{{ btn.link }}" {% for attrname, attrvalue in btn.attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ btn.title|raw }}</a></li>
+                {% else %}
+                    <li><a href="{{ btn.link }}">{{ btn.title|raw }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{%- endmacro %}
+
+
+{# Pagination de bas de listing #}
+{% macro listing_paginate(route, pagination) -%}
+    <p class="pull-left" style="line-height: 34px;margin: 20px 0;">
+        {% if pagination.total %}
+            Affichage de {{ pagination.row_start }} à {{ pagination.row_end }} sur {{ pagination.total }}
+        {% else %}
+            Aucun élément à afficher
+        {% endif %}
+    </p>
+    <nav class="pull-right">
+        <ul class="pagination">
+
+            {% if pagination.page > 1 %}
+                <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': 1})) }}"><<</a></li>
+                <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': pagination.page-1})) }}"><</a></li>
+            {% endif %}
+            {% if pagination.pages_count %}
+                {% for p in range(max(pagination.page-2, 1), min(pagination.page+2, pagination.pages_count)) %}
+                    <li {% if pagination.page == p %}class="active"{% endif %}><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': p})) }}">{{ p }}</a></li>
+                {% endfor %}
+            {% else %}
+                <li class="active"><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': 0})) }}">{{ 1 }}</a></li>
+            {% endif %}
+            {% if pagination.page<pagination.pages_count %}
+                <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': pagination.page+1})) }}">></a></li>
+                <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': pagination.pages_count})) }}">>></a></li>
+            {% endif %}
+        </ul>
+    </nav>
+{%- endmacro %}
+
+{# Action boutons #}
+{% macro listing_row_action(list_btn) -%}
+    {% if list_btn|length > 1 %}
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <span class="fa fa-cog"></span>
+                <span class="sr-only">Afficher/Masquer</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                <li><a href="{{ list_btn[0].link }}" {{ _self.listing_attributes(list_btn[0]) }}>{{ list_btn[0].title|raw }}</a></li>
+                {% for btn in list_btn %}
+                    {% if not loop.first %}
+                        <li><a href="{{ btn.link }}" {{ _self.listing_attributes(btn) }}>{{ btn.title|raw }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <a  class="btn btn-default" href="{{ list_btn[0].link }}" {{ _self.listing_attributes(list_btn[0]) }}>{{ list_btn[0].title|raw }}</a>
+    {% endif %}
+{%- endmacro %}
+
+{% macro listing_attributes(item) -%}
+    {% if item.attr is defined %}
+        {%- for attrname, attrvalue in item.attr -%}
+            {{- " " -}}
+            {% if attrvalue is same as(true) -%}
+                {{- attrname }}="{{ attrname }}"
+            {%- elseif attrvalue is not same as(false) -%}
+                {{- attrname }}="{{ attrvalue }}"
+            {%- endif -%}
+        {%- endfor -%}
+    {% endif %}
+{%- endmacro listing_attributes -%}

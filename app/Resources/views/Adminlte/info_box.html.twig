@@ -1,0 +1,25 @@
+{%- set info_box = {
+    color: info_box.color|default(''),
+    class: info_box.class|default(''),
+    icon: info_box.icon|default('ion ion-ios-gear-outline'),
+    icon_color: info_box.icon_color|default(''),
+    progress_bar:info_box.progress_bar|default(false),
+    progress_bar_value:info_box.progress_bar_value|default(''),
+    progress_description: info_box.progress_description|default(''),
+} -%}
+<div class="info-box {{ info_box.color|trim }} {{ info_box.class|trim }}">
+    {% block pre_info_box %}{% endblock pre_info_box %}
+    <span class="info-box-icon {{ info_box.icon_color|trim }}"><i class="{{ info_box.icon|trim }}"></i></span>
+    <div class="info-box-content">
+        {% block info_box_content %}
+            <span class="info-box-text">{% block info_box_text %}__info_box_text__{% endblock info_box_text %}</span>
+            <span class="info-box-number">{% block info_box_number %}__info_box_number__<small>%</small>{% endblock info_box_number %}</span>
+            {% if info_box.progress_bar %}
+                <div class="progress"><div class="progress-bar" style="width: {{ info_box.progress_bar_value }}%"></div></div>
+                <span class="progress-description">{{ info_box.progress_description }}</span>
+            {% endif %}
+        {% endblock info_box_content %}
+    </div>
+    {% block post_info_box %}{% endblock post_info_box %}
+    <!-- /.info-box-content -->
+</div>
