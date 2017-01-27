@@ -1,0 +1,64 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+
+        <!-- Sidebar user panel -->
+        {#{% include ':components:sidebar-userpanel.html.twig' %}#}
+        <!-- /Sidebar user panel -->
+
+        <!-- search form -->
+        {#{% include ':components:sidebar-searchform.html.twig' %}#}
+        <!-- /.search form -->
+
+        <!-- select operation form -->
+        <form action="#" method="post" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="{{ 'action.search'|trans }}">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+        </form>
+        <!-- /.search form -->
+
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        {% block sidebar_menu %}
+            <ul class="sidebar-menu">
+                <li class="header">Navigation</li>
+                <li class="active">
+                    <a href="#">
+                        <i class="fa fa-dashboard"></i> <span>Tableau de bord</span></i>
+                    </a>
+                </li>
+                {#<li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-building-o"></i>
+                        <span>{{ 'word.companies'|trans }}</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}<li><a href="{{ path('company_index',{slug_type:'ladr'}) }}"><i class="fa fa-circle-o"></i> LADR</a></li>{% endif %}
+                        {% if is_granted('ROLE_SUPER_ADMIN') %}<li><a href="{{ path('company_index',{slug_type:'actia'}) }}"><i class="fa fa-circle-o"></i> ACTIA</a></li>{% endif %}
+                        {% if is_granted('ROLE_DISTRIBUTEUR') %}<li><a href="{{ path('company_index',{slug_type: 'distributeur'}) }}"><i class="fa fa-circle-o"></i> {{ 'word.succursales'|trans }}</a></li>{% endif %}
+                        {% if is_granted('ROLE_DISTRIBUTEUR') %}<li><a href="{{ path('company_index',{'slug_type':'distributeur','no_qualif':1}) }}"><i class="fa fa-circle-o"></i> {{ 'word.succursales'|trans }} non qualifiés</a></li>{% endif %}
+                        {% if is_granted('ROLE_AGENT') %}<li><a href="{{ path('company_index',{slug_type: 'client'}) }}"><i class="fa fa-circle-o"></i> {{ 'word.clients'|trans }}</a></li>{% endif %}
+                        {% if is_granted('ROLE_AGENT') %}<li><a href="{{ path('company_index',{slug_type: 'client','no_qualif':1}) }}"><i class="fa fa-circle-o"></i> {{ 'word.clients'|trans }} non qualifiés</a></li>{% endif %}
+                    </ul>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="treeview">
+                        <a href="#"><i class="fa fa-envelope-o"></i> <span>Mailing</span> <i class="fa fa-angle-left pull-right"></i></a>
+&#123;&#35;                        <ul class="treeview-menu">
+                            <li><a href="{{ path('lexik_mailer.layout_list') }}"><i class="fa fa-list-alt"></i> Layouts</a></li>
+                            <li><a href="{{ path('lexik_mailer.email_list') }}"><i class="fa fa-file-text-o"></i> Emails</a></li>
+                        </ul>&#35;&#125;
+                    </li>
+                {% endif %}#}
+            </ul>
+        {% endblock sidebar_menu %}
+        <!-- /sidebar menu: : style can be found in sidebar.less -->
+
+    </section>
+    <!-- /.sidebar -->
+</aside>
