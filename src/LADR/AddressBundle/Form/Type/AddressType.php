@@ -49,46 +49,9 @@ class AddressType extends AbstractType
                     "required"           => true
                 )
             )
-            ->add('lastname', TextType::class,
+            ->add('minimal', MinimalAddressType::class,
                 array(
-                    "label"              => "form.address.lastname",
-                    "required"           => false
-                )
-            )
-            ->add('firstname', TextType::class,
-                array(
-                    "label"              => "form.address.firstname",
-                    "required"           => false
-                )
-            )
-            ->add('addr', TextType::class,
-                array(
-                    "label"              => "form.addr",
-                    "required"           => true
-                )
-            )
-            ->add('addrComp', TextType::class,
-                array(
-                    "label"              => "form.addrComp",
-                    "required"           => false
-                )
-            )
-            ->add('postalCode', TextType::class,
-                array(
-                    "label"              => "form.postalCode",
-                    "required"           => true
-                )
-            )
-            ->add('city', TextType::class,
-                array(
-                    "label"              => "form.city",
-                    "required"           => true
-                )
-            )
-            ->add('country', CountryType::class,
-                array(
-                    "label"              => "form.country",
-                    "required"           => true
+                    "label"              => false
                 )
             )
             ->add('phone', TextType::class,

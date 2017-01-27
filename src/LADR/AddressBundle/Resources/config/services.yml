@@ -5,6 +5,11 @@ services:
         tags:
           - { name: doctrine.event_listener, event: loadClassMetadata }
 
+    ladr.form.type.address.minimal:
+          class: LADR\AddressBundle\Form\Type\MinimalAddressType
+          tags:
+              - { name: form.type }
+
     ladr.form.type.address:
           class: LADR\AddressBundle\Form\Type\AddressType
           tags:

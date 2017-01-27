@@ -5,6 +5,7 @@ namespace LADR\AddressBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use LADR\AddressBundle\Validator\Constraints as AddressAssert;
+use LADR\AddressBundle\Entity\Traits\MinimalAddressTrait;
 
 /**
  * Address
@@ -41,6 +42,8 @@ class Address
         );
     }
 
+    use MinimalAddressTrait;
+
     /**
      * @var int
      *
@@ -64,52 +67,6 @@ class Address
      * @ORM\Column(name="name", type="string",length=255)
      */
     private $name;
-
-    /**
-     * @ORM\Column(name="firstname", type="string",length=255, nullable=true)
-     */
-    private $firstname;
-
-    /**
-     * @ORM\Column(name="lastname", type="string",length=255, nullable=true)
-     */
-    private $lastname;
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="addr", type="string", length=255, nullable=true)
-     */
-    private $addr;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="addr_comp", type="string", length=255, nullable=true)
-     */
-    private $addrComp;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="city", type="string", length=255, nullable=true)
-     */
-    private $city;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="country", type="string", length=255, nullable=true)
-     * @Assert\Country()
-     */
-    private $country;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="postal_code", type="string", length=255, nullable=true)
-     * @AddressAssert\ZipCode(iso_property="country", groups={"Strict"})
-     */
-    private $postalCode;
 
     /**
      * @var boolean
@@ -179,119 +136,21 @@ class Address
         return $this->role;
     }
 
-    /**
-     * Set addr
-     *
-     * @param string $addr
-     * @return Address
-     */
-    public function setAddr($addr)
-    {
-        $this->addr = mb_strtoupper($addr);
 
-        return $this;
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**
-     * Get addr
-     *
-     * @return string 
+     * @param string $name
      */
-    public function getAddr()
+    public function setName($name)
     {
-        return $this->addr;
-    }
-
-    /**
-     * Set addrComp
-     *
-     * @param string $addrComp
-     * @return Address
-     */
-    public function setAddrComp($addrComp)
-    {
-        $this->addrComp = mb_strtoupper($addrComp);
-
-        return $this;
-    }
-
-    /**
-     * Get addrComp
-     *
-     * @return string 
-     */
-    public function getAddrComp()
-    {
-        return $this->addrComp;
-    }
-
-    /**
-     * Set city
-     *
-     * @param string $city
-     * @return Address
-     */
-    public function setCity($city)
-    {
-        $this->city = mb_strtoupper($city);
-
-        return $this;
-    }
-
-    /**
-     * Get city
-     *
-     * @return string 
-     */
-    public function getCity()
-    {
-        return $this->city;
-    }
-
-    /**
-     * Set country
-     *
-     * @param string $country
-     * @return Address
-     */
-    public function setCountry($country)
-    {
-        $this->country = mb_strtoupper($country);
-
-        return $this;
-    }
-
-    /**
-     * Get country
-     *
-     * @return string 
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-
-    /**
-     * Set postalCode
-     *
-     * @param string $postalCode
-     * @return Address
-     */
-    public function setPostalCode($postalCode)
-    {
-        $this->postalCode =  mb_strtoupper($postalCode);
-
-        return $this;
-    }
-
-    /**
-     * Get postalCode
-     *
-     * @return string 
-     */
-    public function getPostalCode()
-    {
-        return $this->postalCode;
+        $this->name = $name;
     }
 
     /**
@@ -372,54 +231,6 @@ class Address
     public function setFax($fax)
     {
         $this->fax = $fax;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getFirstname()
-    {
-        return $this->firstname;
-    }
-
-    /**
-     * @param mixed $firstname
-     */
-    public function setFirstname($firstname)
-    {
-        $this->firstname = $firstname;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLastname()
-    {
-        return $this->lastname;
-    }
-
-    /**
-     * @param mixed $lastname
-     */
-    public function setLastname($lastname)
-    {
-        $this->lastname = $lastname;
     }
 
     public function __toString(){
