@@ -10,7 +10,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     {% block stylesheets %}
-        <link rel="stylesheet" href="{{ asset('stylesheets/admin.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/stylesheets/admin.css') }}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.20/daterangepicker.min.css">
         <link rel="stylesheet" href="https://cdn.datatables.net/u/bs/jszip-2.5.0,pdfmake-0.1.18,dt-1.10.12,b-1.2.1,b-colvis-1.2.1,b-flash-1.2.1,b-html5-1.2.1,b-print-1.2.1,r-2.1.0/datatables.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css"/>
@@ -33,8 +33,8 @@
         <script src="{{ asset('assets/js/bc-bootstrap-collection.js') }}"></script>
         <script src="{{ asset('assets/js/underscore-min.js') }}"></script>
         <script src="{{ asset('assets/js/stupidtable.min.js') }}"></script>
-        <script src="{{ asset('assets/bundles/fosjsrouting/js/router.js') }}"></script>
-        <script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>
+        {#<script src="{{ asset('assets/bundles/fosjsrouting/js/router.js') }}"></script>#}
+        {#<script src="{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}"></script>#}
         <script src="{{ asset('assets/js/admin-lte.js') }}"></script>
     {% endblock %}
 
@@ -42,12 +42,12 @@
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         {% block header %}
-            {% include ':components:header.html.twig' %}
+            {% include 'Adminlte/section/header.html.twig' %}
         {% endblock header %}
 
         <!-- Left side column. contains the logo and sidebar -->
         {% block sidebar %}
-            {% include ':components:sidebar.html.twig' %}
+            {% include 'Adminlte/section/sidebar.html.twig' %}
         {% endblock sidebar %}
 
         <!-- Content Wrapper. Contains page content -->
