@@ -51,7 +51,8 @@ class AddressType extends AbstractType
             )
             ->add('minimal', MinimalAddressType::class,
                 array(
-                    "label"              => false
+                    "label"              => false,
+                    "inherit_data"       => true
                 )
             )
             ->add('phone', TextType::class,

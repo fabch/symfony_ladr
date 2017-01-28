@@ -26,6 +26,12 @@ class MinimalAddressType extends AbstractType
                     "required"           => false
                 )
             )
+            ->add('lastName', TextType::class,
+                array(
+                    "label"              => "form.address.last_name",
+                    "required"           => false
+                )
+            )
             ->add('addr', TextType::class,
                 array(
                     "label"              => "form.addr",
@@ -63,9 +69,7 @@ class MinimalAddressType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'inherit_data' => true
-        ));
+        $resolver->setDefaults(array());
     }
 
     public function getParent(){
