@@ -25,7 +25,7 @@ class AddressType extends AbstractType
                 array(
                     'choices'            => Address::getRoleList(),
                     "choice_translation_domain" => "LADRAddressBundle",
-                    "label"                     => "form.address.role",
+                    "label"                     => "Role",
                     "multiple"                  => false,
                     "expanded"                  => false,
                     "required"                  => true
@@ -33,19 +33,19 @@ class AddressType extends AbstractType
             )
             ->add('professional', CheckboxType::class,
                 array(
-                    "label"              => "form.address.professional",
+                    "label"              => "Professionel ?",
                     "required"           => false
                 )
             )
             ->add('defAddr', CheckboxType::class,
                 array(
-                    "label"              => "form.address.def_addr",
+                    "label"              => "Par défaut ?",
                     "required"           => false
                 )
             )
             ->add('name', TextType::class,
                 array(
-                    "label"              => "form.address.name",
+                    "label"              => "Libelle",
                     "required"           => true
                 )
             )
@@ -57,19 +57,19 @@ class AddressType extends AbstractType
             )
             ->add('phone', TextType::class,
                 array(
-                    "label"              => "form.phone",
+                    "label"              => "Téléphone",
                     "required"           => false
                 )
             )
             ->add('mobile', TextType::class,
                 array(
-                    "label"              => "form.mobile",
+                    "label"              => "Mobile",
                     "required"           => false
                 )
             )
             ->add('fax', TextType::class,
                 array(
-                    "label"              => "form.fax",
+                    "label"              => "Fax",
                     "required"           => false
                 )
             );

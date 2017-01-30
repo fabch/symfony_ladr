@@ -22,43 +22,43 @@ class MinimalAddressType extends AbstractType
         $builder
             ->add('firstName', TextType::class,
                 array(
-                    "label"              => "form.address.first_name",
+                    "label"              => "Prénom",
                     "required"           => false
                 )
             )
             ->add('lastName', TextType::class,
                 array(
-                    "label"              => "form.address.last_name",
+                    "label"              => "Nom",
                     "required"           => false
                 )
             )
             ->add('addr', TextType::class,
                 array(
-                    "label"              => "form.addr",
+                    "label"              => "Adresse",
                     "required"           => true
                 )
             )
             ->add('addrComp', TextType::class,
                 array(
-                    "label"              => "form.addrComp",
+                    "label"              => "Complément d'adresse",
                     "required"           => false
                 )
             )
             ->add('postalCode', TextType::class,
                 array(
-                    "label"              => "form.postalCode",
+                    "label"              => "Code postal",
                     "required"           => true
                 )
             )
             ->add('city', TextType::class,
                 array(
-                    "label"              => "form.city",
+                    "label"              => "Ville",
                     "required"           => true
                 )
             )
             ->add('country', CountryType::class,
                 array(
-                    "label"              => "form.country",
+                    "label"              => "Pays",
                     "required"           => true
                 )
             );
