@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="{{ _charset }}" />
+        <title>An Error Occurred: {{ status_text }}</title>
+    </head>
+    <body>
+        {% block body %}
+            <div class="container">
+                <section class="content">
+                    <div class="error-page">
+
+                        {#  Erreur du client web  #}
+
+                        {% if status_code|first == 4 %}
+                            <h2 class="headline text-yellow"> {{ status_code }}</h2>
+
+                            <div class="error-content">
+                                <h3><i class="fa fa-warning text-yellow"></i> Oops! La page n'as pas été trouvée</h3>
+
+                                <p>
+                                    Nous n'avons pas trouvé la page que vous souhaitez.
+                                    <a href="{{ path('homepage') }}">Retour à l'accueil</a>
+                                </p>
+                            </div>
+
+                        {#  Redirection  #}
+
+                        {% elseif status_code|first == 3 %}
+                            <h2 class="headline text-yellow"> {{ status_code }}</h2>
+
+                            <div class="error-content">
+                                <h3><i class="fa fa-warning text-yellow"></i> Oops! Il semblerais que </h3>
+
+                                <p>
+                                    Nous n'avons pas trouvé la page que vous souhaitez.
+                                    <a href="{{ path('homepage') }}">Retour à l'accueil</a>
+                                </p>
+                            </div>
+
+                        {#  Erreur du serveur / du serveur d'application  #}
+
+                        {% else %}
+                            <h2 class="headline text-red"> {{ status_code }}</h2>
+
+                            <div class="error-content">
+                                <h3><i class="fa fa-warning text-red"></i> Oops! Une erreur est survenue</h3>
+
+                                <p>Une erreur est survenue et nous travaillons actuellement à la résoudre.
+                                    <a href="{{ path('homepage') }}">Retour à l'accueil</a>
+                                </p>
+                            </div>
+                        {% endif %}
+                        <!-- /.error-content -->
+                    </div>
+                    <!-- /.error-page -->
+                </section>
+            </div>
+        {% endblock body %}
+    </body>
+</html>
