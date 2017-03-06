@@ -1,0 +1,72 @@
+{% block extends %}
+    {{- "{% extends 'base.html.twig' %}" -}}
+{% endblock extends %}
+
+{% block body %}
+
+{{ "{% block content_header %}" }}
+    <h1>{{ "{{ 'Visualiser'|trans }}" }} {{ entity }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> {{ "{{ 'Administration'|trans }}" }}</a></li>
+        <li><a href="{{ "{{ path('" ~ route_name_prefix ~ "_index') }}" }}">{{ entity }}</a></li>
+        <li class="active">{{ "{{ 'Visualiser'|trans }}" }}</li>
+    </ol>
+{{ "{% endblock content_header %}" }}
+
+
+{{ "{% block content_inner %}" }}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{ entity }}</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table width="100%" class="table table-striped">
+            <tbody>
+            {%- for field, metadata in fields %}
+
+                <tr>
+                    <th>{{ field|capitalize }}</th>
+
+                    {%- if metadata.type in ['datetime'] %}
+
+                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+
+                    {%- elseif metadata.type in ['date'] %}
+
+                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d\') }}{% endif %}' }}</td>
+
+                    {%- elseif metadata.type in ['time'] %}
+
+                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'H:i:s\') }}{% endif %}' }}</td>
+
+                    {%- elseif metadata.type in ['array'] %}
+
+                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|join(\', \') }}{% endif %}' }}</td>
+
+                    {%- elseif metadata.type in ['boolean'] %}
+
+                        <td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ "Oui"|trans }}{% else %}{{ "Non"|trans }}{% endif %}' }}</td>
+
+                    {%- else %}
+
+                        <td>{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+
+                    {%- endif %}
+
+                </tr>
+
+            {%- endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer with-border">
+        <a class="btn-primary btn" href="{{ "{{ path('" ~ route_name_prefix ~ "_edit', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ "{{ 'Modifier'|trans }}" }}</a>
+    </div>
+    <!-- /.box-footer -->
+</div>
+{{ "{% endblock content_inner %}" }}
+
+{% endblock body %}
