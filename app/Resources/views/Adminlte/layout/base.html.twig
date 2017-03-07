@@ -40,61 +40,7 @@
 
 </head>
 <body class="{% block body_class %}hold-transition skin-red-light sidebar-mini{% endblock body_class %}">
-    {% block body %}
-        <div class="wrapper">
-            {% block header %}
-                {% include 'Adminlte/section/header.html.twig' %}
-            {% endblock header %}
-
-            <!-- Left side column. contains the logo and sidebar -->
-            {% block sidebar %}
-                {% include 'Adminlte/section/sidebar.html.twig' %}
-            {% endblock sidebar %}
-
-            <!-- Content Wrapper. Contains page content -->
-            {% block content_wrapper %}
-                <div class="content-wrapper">
-                    <!-- Content Header (Page header) -->
-                    <section class="content-header">
-                        {% block content_header %}
-                        {% endblock content_header %}
-                    </section>
-
-                    <!-- Main content -->
-                    <section class="content">
-
-                        {% for type, flashes in app.session.flashbag.all %}
-                            {% for flash in flashes %}
-                                <div class="alert alert-{{ type }} alert-dismissible">
-                                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                    {% if type == 'success' %}
-                                        <h4><i class="icon fa fa-check"></i> C'est tout bon !</h4>
-                                    {% elseif type =='error' %}
-                                        <h4><i class="icon fa fa-ban"></i> Oups, il semble qu'il y ait une erreur !</h4>
-                                    {% elseif type =='warning' %}
-                                        <h4><i class="icon fa fa-exclamation-triangle"></i> Attention !</h4>
-                                    {% endif %}
-                                    {{ flash|raw }}
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-
-                        {% block content %}
-                        {% endblock content %}
-                    </section>
-                    <!-- /.content -->
-                </div>
-                <!-- /.content-wrapper -->
-            {% endblock content_wrapper %}
-            <footer class="main-footer">
-                <div class="pull-right hidden-xs">
-                    <b>Version</b> 1.0
-                </div>
-                <strong>Copyright © {{ 'now'|date('Y') }} <a href="#">Les Ateliers du R.O.I</a>.</strong>
-            </footer>
-        </div>
-        <div id="Modal" class="modal fade"></div>
-    {% endblock %}
+{% block body %}
+{% endblock %}
 </body>
 </html>
-
