@@ -1,179 +1,274 @@
 {%- block extends -%}
-	{{ "{% extends 'admin.html.twig' %}" }}
-	{{ "{% import ':Adminlte/widget:datatable.html.twig' as datatable_util %}" }}
+	{{- "{% extends 'admin.html.twig' %}" -}}
+	{{ "{% import ':Adminlte/widget:datatable.html.twig' as datatable_util %}" -}}
 {%- endblock extends %}
 
 {% block body %}
 
-{{ "{% block stylesheets %}" }}
+
+	{{ "{% macro filter_cell(col, title) %}
+	<td data-column=\"{{ col }}\">
+		<input type=\"checkbox\" id=\"col{{ col }}_vis\" value=\"1\" checked=\"checked\" class=\"pull-right column_vis\">{{ title }}<br/>
+		<input type=\"text\" style=\"width:100%\" class=\"input-block column_filter\" id=\"col{{ col }}_filter\">
+	</td>
+{% endmacro %}" }}
+
+	{{ "{% block stylesheets %}" }}
 	{{ "{{ parent() }}" }}
 	<link rel="stylesheet" href="{{ "{{ asset('assets/js/datatables/dataTables.bootstrap.css') }}" }}">
-{{ "{% endblock %}" }}
+	{{ "{% endblock %}" }}
 
-{{ "{% block content_header %}" }}
-	<h1>{{ "{{ '" ~ entity ~ "'|trans }}" }}</h1>
+	{{ "{% block content_header %}" }}
+	<h1>{{ "{{ 'action.create'|trans }}" }} {{ entity }}</h1>
 	<ol class="breadcrumb">
-		<li><a href="#"><i class="fa fa-dashboard"></i> {{ "{{ 'Tableau de bord'|trans }}" }}</a></li>
+		<li><a href="{{ "{{ path('admin') }}" }}"><i class="fa fa-dashboard"></i> {{ "{{ 'Administration'|trans }}" }}</a></li>
 		<li class="active">{{ entity }}</li>
 	</ol>
-{{ "{% endblock content_header %}" }}
+	{{ "{% endblock content_header %}" }}
 
-{{ "{% block content_inner %}" }}
+	{{ "{% block content %}" }}
+
+	<div class="box box-info box-solid collapsed-box">
+		<div class="box-header with-border">
+			<h3 class="box-title">Filtrer</h3>
+			<div class="box-tools pull-right">
+				<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+			</div>
+		</div>
+
+		<!-- /.box-header -->
+		<div class="box-body" style="display: none;">
+			<table id="filter_table" class="table table-bordered table-striped" style="width:100%">
+				<!--
+                (tr>((th[data-column=$@1]>input#col$@1_vis[type=checkbox,value=1,checked=checked].pull-right.column_vis{content})+td[data-column=$@1]>input[type=text].column_filter#col$@1_filter))*6
+                -->
+				{% set key = 0 %}
+				{% for row in fields|batch(3, false) -%}
+					<tr>
+						{%- for field, metadata in row %}
+							{% if row is not false %}
+								{{ '{{ _self.filter_cell(' ~ key ~ ',"' ~ field ~ '"|trans) }}' }}
+							{% else %}
+								<td></td>
+							{% endif %}
+							{% set key = key + 1 %}
+						{% endfor -%}
+					</tr>
+				{% endfor -%}
+			</table>
+		</div>
+	</div>
+
+
 	<div class="box">
 		<div class="box-header with-border">
 			<h3 class="box-title">{{ entity }}</h3>
+			{%- if ('new' in actions) and (not hide_edit) %}
 			<div class="box-tools pull-right">
 				<a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}" class="btn btn-sm btn-primary">{{ "<i class=\"glyphicon glyphicon-plus\"></i> {{- 'Ajouter'|trans -}}" }}</a>
 			</div>
+			{% endif -%}
 		</div>
 		<!-- /.box-header -->
-		<div class="box-body">
-			<table id="{{ entity|lower }}_datatable" class="table table-bordered table-striped">
-				<thead>
-				<tr>
-					{% for field, metadata in fields -%}
-						<th>{{ "{{- '" ~ field ~ "'|trans -}}" }}</th>
+		<table id="{{ entity|lower }}_datatable" class="table table-bordered table-striped" style="width: 100%;">
+			<thead>
+			<tr>
+				{% set key = 0 %}
+				{% for field, metadata in fields -%}
+				<th class="{{ entity|lower }}_datatable_header{{ key }}">{{ "{{- '" ~ field ~ "'|trans -}}" }}
+					{% set key = key + 1 %}
 					{% endfor -%}
-					<th>{{ "{{ 'Actions'|trans }}" }}</th>
-				</tr>
-				</thead>
-				<tbody>
-					{{ '{% for ' ~ entity_singularized ~ ' in ' ~ entity_pluralized ~ ' %}' }}
-						<tr>
-							{%- for field, metadata in fields %}
-								{%- if loop.first and ('show' in actions) %}
+				<th>{{ "{{ 'Actions'|trans }}" }}</th>
+			</tr>
+			</thead>
+			<tbody>
+			{{ '{% for ' ~ entity_singularized ~ ' in ' ~ entity_pluralized ~ ' %}' }}
+			<tr>
+				{%- for field, metadata in fields %}
+					{%- if loop.first and ('show' in actions) %}
 
-									<td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
+						<td><a href="{{ "{{ path('" ~ route_name_prefix ~ "_show', { 'id': " ~ entity_singularized ~ "."~ identifier ~" }) }}" }}">{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</a></td>
 
-								{%- elseif metadata.type in ['datetime'] %}
+					{%- elseif metadata.type in ['datetime'] %}
 
-									<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
+						<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d H:i:s\') }}{% endif %}' }}</td>
 
-								{%- elseif metadata.type in ['date'] %}
+					{%- elseif metadata.type in ['date'] %}
 
-									<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d\') }}{% endif %}' }}</td>
+						<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'Y-m-d\') }}{% endif %}' }}</td>
 
-								{%- elseif metadata.type in ['time'] %}
+					{%- elseif metadata.type in ['time'] %}
 
-									<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'H:i:s\') }}{% endif %}' }}</td>
+						<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|date(\'H:i:s\') }}{% endif %}' }}</td>
 
-								{%- elseif metadata.type in ['array'] %}
+					{%- elseif metadata.type in ['array'] %}
 
-									<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|join(\', \') }}{% endif %}' }}</td>
+						<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ '|join(\', \') }}{% endif %}' }}</td>
 
-								{%- elseif metadata.type in ['boolean'] %}
+					{%- elseif metadata.type in ['boolean'] %}
 
-									<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ "word.yes"|trans }}{% else %}{{ "word.no"|trans }}{% endif %}' }}</td>
+						<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ "word.yes"|trans }}{% else %}{{ "word.no"|trans }}{% endif %}' }}</td>
 
-								{%- else %}
+					{%- else %}
 
-									<td>{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
+						<td>{{ '{{ ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' }}' }}</td>
 
-								{%- endif -%}
+					{%- endif -%}
 
-								{%- if loop.last %}
+					{%- if loop.last %}
 
-									<td align="right" class="no-export">
-										<div class="btn-group">
-											{% if record_actions|length > 0 -%}
-												{{ '{{ datatable_util.listing_row_action([' }}
-											{% endif %}
-											{%- for action in record_actions -%}
-													{{ "{ 'link': path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id':" ~ entity_singularized ~ "." ~ identifier ~ "}), 'title':'<i class=\"glyphicon glyphicon-asterisk\"></i> ' ~ " ~ "'action." ~ action ~ "'|trans" ~ " }" ~ (loop.last ? '' : ',') }}
-											{% endfor -%}
-											{% if record_actions|length > 0 -%}
-												{{ ']) }}' }}
-											{% endif -%}
-										</div>
-									</td>
+						<td align="right" >
+							<div class="btn-group">
+								{% if record_actions|length > 0 -%}
+									{{ '{{ datatable_util.listing_row_action([' }}
 								{% endif %}
-							{% endfor -%}
-						</tr>
-					{{ '{% endfor %}' }}
-				</tbody>
-			</table>
-		</div>
-		<!-- /.box-body -->
+								{%- for action in record_actions -%}
+									{{ "{ 'link': path('" ~ route_name_prefix ~ "_" ~ action ~ "', { 'id':" ~ entity_singularized ~ "." ~ identifier ~ "}), 'title':'<i class=\"glyphicon glyphicon-asterisk\"></i> ' ~ " ~ "'action." ~ action ~ "'|trans" ~ " }" ~ (loop.last ? '' : ',') }}
+								{% endfor -%}
+								{% if record_actions|length > 0 -%}
+									{{ ']) }}' }}
+								{% endif -%}
+							</div>
+						</td>
+					{% endif %}
+				{% endfor -%}
+			</tr>
+			{{ '{% endfor %}' }}
+			</tbody>
+			<tfoot>
+			<tr>
+				{% for field, metadata in fields -%}
+					<th>{{ "{{- '" ~ field ~ "'|trans -}}" }}</th>
+				{% endfor -%}
+				<th>{{ "{{ 'Actions'|trans }}" }}</th>
+			</tr>
+			</tfoot>
+		</table>
 	</div>
-{{ "{% endblock content_inner %}" }}
+	{{ "{% endblock content %}" }}
 
 	{{ "{% block javascripts %}" }}
-		{{ "{{ parent() }}" }}
-		<script src="{{ "{{ asset('assets/js/datatables/jquery.dataTables.min.js') }}" }}"></script>
-		<script src="{{ "{{ asset('assets/js/datatables/dataTables.bootstrap.min.js') }}" }}"></script>
-		<script src="https://cdn.datatables.net/buttons/1.2.1/js/dataTables.buttons.min.js" language="javascript" type="text/javascript"></script>
-		<script src="//cdn.datatables.net/buttons/1.2.1/js/buttons.flash.min.js" language="javascript" type="text/javascript"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" language="javascript" type="text/javascript"></script>
-		<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" language="javascript" type="text/javascript"></script>
-		<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" language="javascript" type="text/javascript"></script>
-		<script src="//cdn.datatables.net/buttons/1.2.1/js/buttons.html5.min.js" language="javascript" type="text/javascript"></script>
-		<script src="//cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js" language="javascript" type="text/javascript"></script>
-		<script type="text/javascript">
+	{{ "{{ parent() }}" }}
+	<script src="{{ "{{ asset('assets/js/datatables/jquery.dataTables.min.js') }}" }}"></script>
+	<script src="{{ "{{ asset('assets/js/datatables/dataTables.bootstrap.min.js') }}" }}"></script>
+	<script src="https://cdn.datatables.net/buttons/1.2.1/js/dataTables.buttons.min.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/buttons/1.2.1/js/buttons.flash.min.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/buttons/1.2.1/js/buttons.html5.min.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/buttons/1.2.1/js/buttons.print.min.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js" language="javascript" type="text/javascript"></script>
+	<script src="//cdn.datatables.net/plug-ins/1.10.12/filtering/type-based/html.js" language="javascript" type="text/javascript"></script>
+	<script type="text/javascript">
 
+		jQuery.fn.DataTable.ext.type.search.string = function ( data ) {
+			return ! data ?
+					'' :
+					typeof data === 'string' ?
+							data
+									.replace( /έ/g, 'ε' )
+									.replace( /[ύϋΰ]/g, 'υ' )
+									.replace( /ό/g, 'ο' )
+									.replace( /ώ/g, 'ω' )
+									.replace( /ά/g, 'α' )
+									.replace( /[ίϊΐ]/g, 'ι' )
+									.replace( /ή/g, 'η' )
+									.replace( /\n/g, ' ' )
+									.replace( /á/g, 'a' )
+									.replace( /é/g, 'e' )
+									.replace( /í/g, 'i' )
+									.replace( /ó/g, 'o' )
+									.replace( /ú/g, 'u' )
+									.replace( /ê/g, 'e' )
+									.replace( /î/g, 'i' )
+									.replace( /ô/g, 'o' )
+									.replace( /è/g, 'e' )
+									.replace( /ï/g, 'i' )
+									.replace( /ü/g, 'u' )
+									.replace( /ã/g, 'a' )
+									.replace( /õ/g, 'o' )
+									.replace( /ç/g, 'c' )
+									.replace( /ì/g, 'i' ) :
+							data;
+		};
 
-			$(function () {
+		$(function () {
 
-				$.extend( true, $.fn.dataTable.defaults, {
-					"paging": true,
-					"lengthChange": true,
-					"searching": true,
-					"ordering": true,
-					"info": true,
-					"autoWidth": true,
-					"language": {
-                        "sProcessing":     "Traitement en cours...",
-                        "sSearch":         "Rechercher&nbsp;:",
-                        "sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
-                        "sInfo":           "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
-                        "sInfoEmpty":      "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
-                        "sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
-                        "sInfoPostFix":    "",
-                        "sLoadingRecords": "Chargement en cours...",
-                        "sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
-                        "sEmptyTable":     "Aucune donn&eacute;e disponible dans le tableau",
-                        "oPaginate": {
-                            "sFirst":      "Premier",
-                            "sPrevious":   "Pr&eacute;c&eacute;dent",
-                            "sNext":       "Suivant",
-                            "sLast":       "Dernier"
-                        },
-                        "oAria": {
-                            "sSortAscending":  ": activer pour trier la colonne par ordre croissant",
-                            "sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
-                        }
-                    }
+			$.extend( true, $.fn.dataTable.defaults, {
+				"paging": true,
+				"lengthChange": true,
+				"searching": true,
+				"ordering": true,
+				"info": true,
+				"autoWidth": true,
+				"language": {
+					"sProcessing":     "Traitement en cours...",
+					"sSearch":         "Rechercher&nbsp;:",
+					"sLengthMenu":     "Afficher _MENU_ &eacute;l&eacute;ments",
+					"sInfo":           "Affichage de l'&eacute;l&eacute;ment _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+					"sInfoEmpty":      "Affichage de l'&eacute;l&eacute;ment 0 &agrave; 0 sur 0 &eacute;l&eacute;ment",
+					"sInfoFiltered":   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+					"sInfoPostFix":    "",
+					"sLoadingRecords": "Chargement en cours...",
+					"sZeroRecords":    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+					"sEmptyTable":     "Aucune donn&eacute;e disponible dans le tableau",
+					"oPaginate": {
+						"sFirst":      "Premier",
+						"sPrevious":   "Pr&eacute;c&eacute;dent",
+						"sNext":       "Suivant",
+						"sLast":       "Dernier"
+					},
+					"oAria": {
+						"sSortAscending":  ": activer pour trier la colonne par ordre croissant",
+						"sSortDescending": ": activer pour trier la colonne par ordre d&eacute;croissant"
+					}
+				}
 
-				} );
+			} );
 
-				$('#{{ entity|lower }}_datatable').DataTable({
-					dom            : "<'row'<'col-sm-6'l><'col-sm-6'f>>rt<'row'<'col-sm-2'B><'col-sm-4'i><'col-sm-6'p>>",
-					buttons        : [
-						{
-							extend       : 'pdf',
-							className    : 'btn btn-primary btn-sm',
-							exportOptions: {columns: ':not(.no-export)'},
-							title        : '{{ entity }}'
-						},
-						{
-							extend       : 'excel',
-							className    : 'btn btn-danger btn-sm',
-							exportOptions: {columns: ':not(.no-export)'},
-							title        : '{{ entity }}'
-						}
-					],
-					"paging"       : true,
-					"lengthChange" : true,
-					"searching"    : true,
-					"ordering"     : true,
-					"info"         : true,
-					"autoWidth"    : true,
-					"responsive"   : true,
-					"lengthMenu"   : [[10, 25, 50, -1], [10, 25, 50, "{{ "{{ 'Tous'|trans }}" }}"]],
-					"pageLength"   : 10,
-					"columnDefs"   : [{"targets": 'dt-ico', "orderable": false}]
-				});
+			$('#{{ entity|lower }}_datatable').DataTable({
+				dom: "<'row'<'col-sm-6'<'col-sm-12'l>><'col-sm-6'<'col-sm-12'f>>><'box-body table-responsive no-padding'rt><'box-footer'<'col-sm-2'B><'col-sm-4'i><'col-sm-6'p>>",
+				buttons: [
+					{
+						extend: 'excel',
+						className: 'btn btn-danger btn-sm',
+						exportOptions: {columns: ':not(.actions)'},
+						title: 'Clients'
+					}
+				],
+				"paging"       : true,
+				"lengthChange" : true,
+				"searching"    : true,
+				"ordering"     : true,
+				"info"         : true,
+				"autoWidth"    : true,
+				"responsive"   : true,
+				"lengthMenu"   : [[10, 25, 50, -1], [10, 25, 50, "{{ "{{ 'Tous'|trans }}" }}"]],
+				"pageLength"   : 10,
+				"columnDefs"   : [{"targets": 'dt-ico', "orderable": false}]
 			});
-		</script>
+
+			$('input.column_vis').on( 'click', function (e) {
+				// Get the column API object
+				var column = $('#{{ entity|lower }}_datatable').DataTable().column( $(this).parent().data('column') );
+
+				if($(this).prop('checked')){
+					column.visible( true );
+					$('.{{ entity|lower }}_datatable_header' + $(this).parent().data('column')).removeClass('hideExport');
+				}else{
+					column.visible(false);
+					$('.{{ entity|lower }}_datatable_header' + $(this).parent().data('column')).addClass('hideExport');
+				}
+			} );
+
+			$('.column_filter').on( 'keyup click change', function () {
+				$('#{{ entity|lower }}_datatable').DataTable().column( $(this).parent().data('column') ).search(
+						$('#col'+ $(this).parent().data('column')  +'_filter').val(),false,true,true
+				).draw();
+			} );
+		});
+	</script>
 	{{ "{% endblock javascripts %}" }}
 {% endblock body %}
 
