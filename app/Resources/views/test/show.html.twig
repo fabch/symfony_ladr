@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block content_header %}
+    <h1>{{ 'Visualiser'|trans }} Test</h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> {{ 'Administration'|trans }}</a></li>
+        <li><a href="{{ path('test_index') }}">Test</a></li>
+        <li class="active">{{ 'Visualiser'|trans }}</li>
+    </ol>
+{% endblock content_header %}
+
+
+{% block content_inner %}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Test</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table width="100%" class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                        <td>{{ test.id }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                        <td>{{ test.email }}</td>
+                </tr>
+                <tr>
+                    <th>Infos</th>
+                        <td>{{ test.infos }}</td>
+                </tr>
+                <tr>
+                    <th>Plv</th>
+                        <td>{% if test.plv %}{{ test.plv|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer with-border">
+        <a class="btn-primary btn" href="{{ path('test_edit', { 'id': test.id }) }}">{{ 'Modifier'|trans }}</a>
+    </div>
+    <!-- /.box-footer -->
+</div>
+{% endblock content_inner %}
+

@@ -1,3 +1,7 @@
+ladr_sms:
+    resource: "@LADRSmsBundle/Controller/"
+    type:     annotation
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation
