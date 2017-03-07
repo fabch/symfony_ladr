@@ -1,7 +1,7 @@
-{% extends '::base.html.twig' %}
+{% extends ':Adminlte/layout:login-page.html.twig' %}
 
-{% block body %}
-
+{% block content %}
+    {{ parent() }}
     {% if error %}
         <div>{{ error.message }}</div>
     {% endif %}

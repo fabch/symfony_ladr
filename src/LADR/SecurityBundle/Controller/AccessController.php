@@ -11,6 +11,11 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Access controller.
+ *
+ * @Route("acces")
+ */
 class AccessController extends Controller
 {
 
@@ -20,7 +25,7 @@ class AccessController extends Controller
      * @param Request $request
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/accesses", name="ladr_security_access_index")
+     * @Route("/", name="ladr_security_access_index")
      * @Method({"GET", "POST"})
      */
     public function indexAccessAction(Request $request){
@@ -37,7 +42,7 @@ class AccessController extends Controller
      * @param Request $request
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/accesses/add", name="ladr_security_access_new")
+     * @Route("/ajouter", name="ladr_security_access_new")
      * @Method({"GET", "POST"})
      */
     public function addAccessAction(Request $request){
@@ -53,12 +58,6 @@ class AccessController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /*
-            $username = $access->getContact() !== null ? $this->get('ladr.util.username_generator')->generateUsernameFor($access->getContact());
-            $plainPassword = $this->get('ladr.util.password_generator')->generatePassword();
-            $access->setUsername($username);
-            $access->setPassword($this->get('security.password_encoder')->encodePassword($access, $plainPassword));
-            */
 
             $password = $this->get('security.password_encoder')
                 ->encodePassword($access, $access->getPlainPassword());
@@ -72,7 +71,7 @@ class AccessController extends Controller
             return $this->redirectToRoute('ladr_security_access_index');
         }
 
-        return $this->render(':default:form.html.twig', array(
+        return $this->render('LADRSecurityBundle:Access:new.html.twig', array(
             'form'    => $form->createView()
         ));
     }
@@ -82,7 +81,7 @@ class AccessController extends Controller
      * Edit access entity
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/accesses/{id}/edit", name="ladr_security_access_edit")
+     * @Route("/{id}/modifier", name="ladr_security_access_edit")
      * @Method({"GET","POST"})
      */
     public function editAccessAction(Request $request, Access $access)
@@ -103,7 +102,7 @@ class AccessController extends Controller
             return $this->redirectToRoute('ladr_security_access_index');
         }
 
-        return $this->render(':default:form.html.twig', array(
+        return $this->render('LADRSecurityBundle:Access:edit.html.twig', array(
             'form'    => $form->createView()
         ));
 
@@ -113,7 +112,7 @@ class AccessController extends Controller
      * Deletes a Access entity.
      *
      * @Security("has_role('ROLE_USER')")
-     * @Route("/accesses/{id}/remove", name="ladr_security_access_remove")
+     * @Route("/{id}/supprimer", name="ladr_security_access_remove")
      * @Method({"DELETE"})
      */
     public function removeAccessAction(Request $request, Access $access)

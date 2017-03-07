@@ -1,6 +1,7 @@
 parameters:
     ladr.form.security.access.class: LADR\SecurityBundle\Form\AccessType
     ladr.form.security.register.class: LADR\SecurityBundle\Form\RegisterType
+    ladr.form.security.change_password.class: LADR\SecurityBundle\Form\ChangePasswordType
 
 services:
 
@@ -19,5 +20,10 @@ services:
 
     ladr.form.security.register:
         class: '%ladr.form.security.register.class%'
+        tags:
+            - { name: form.type }
+
+    ladr.form.security.change_password:
+        class: '%ladr.form.security.change_password.class%'
         tags:
             - { name: form.type }
