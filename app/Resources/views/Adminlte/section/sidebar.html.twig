@@ -21,46 +21,6 @@
                 <li class="active">
                     <a href="{{ path('admin') }}#"><i class="fa fa-dashboard"></i> <span>Tableau de bord</span></a>
                 </li>
-                <li>
-                    <a href="{{ path('agences_list_plv') }}">
-                        <i class="ion ion-flag"></i>
-                        <span>Pose des PLV</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('agences_list_passages') }}">
-                        <i class="ion ion-clock"></i>
-                        <span>Dates de RDV</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('agences_index') }}">
-                        <i class="fa fa-building-o"></i>
-                        <span>Agences</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ path('client_index') }}">
-                        <i class="ion-person-stalker"></i>
-                        <span>Clients</span>
-                    </a>
-                </li>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li>
-                        <a href="{{ path('stock_index') }}">
-                            <i class="ion-volume-high"></i>
-                            <span>Stock</span>
-                        </a>
-                    </li>
-                {% endif %}
-                <li class="treeview">
-                    <a href="#"><i class="ion ion-filing"></i> <span>Documents</span> <i class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ asset('uploads/docs/20170127_Affiche_Europole_Pulse_Print_Helvetica.pdf') }}" download="download"><i class="fa fa-file-text-o"></i> Affiche Pulse</a></li>
-                        <li><a href="{{ asset('uploads/docs/20170222_Affiche_Promo-YAKO-SENSOR-PULSE-BD.pdf') }}" download="download"><i class="fa fa-file-text-o"></i> Affiche YAKO</a></li>
-                        <li><a href="{{ asset('uploads/docs/EUROPOLE_Règlement.pdf') }}" download="download"><i class="fa fa-file-text-o"></i> Règlement</a></li>
-                    </ul>
-                </li>
                 {#<li class="treeview">
                     <a href="#">
                         <i class="fa fa-building-o"></i>
@@ -83,8 +43,8 @@
                 </li>#}
                 {% if is_granted('ROLE_SUPER_ADMIN') %}
                     <li class="header">Paramétrage</li>
-                    <li><a href="{{ path('ladr_contact_index') }}"><i class="fa fa-user"></i> <span>Contacts</span> </a></li>
                     <li><a href="{{ path('ladr_security_access_index') }}"><i class="fa fa-lock"></i> <span>Accès</span> </a></li>
+                    <li><a href="{{ path('ladr_contact_index') }}"><i class="fa fa-user"></i> <span>Contacts</span> </a></li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-envelope-o"></i> <span>Mailing</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">
