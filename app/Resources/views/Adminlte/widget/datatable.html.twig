@@ -59,7 +59,6 @@
     </p>
     <nav class="pull-right">
         <ul class="pagination">
-
             {% if pagination.page > 1 %}
                 <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': 1})) }}"><<</a></li>
                 <li><a class="listing_link" href="{{ path(route, pagination.route_params|merge({'page': pagination.page-1})) }}"><</a></li>
@@ -77,6 +76,20 @@
             {% endif %}
         </ul>
     </nav>
+{%- endmacro %}
+
+{# bouton de tri asc/desc sur les colonnes du tableau #}
+{% macro listing_row_filter(entity) -%}
+    {%- spaceless -%}
+        <span>
+            {% set sorted_style = pagination.route_params.field == field ? 'color:#737373;' :'' %}
+            {% if  pagination.route_params.field is defined and pagination.route_params.field == field and pagination.route_params.order == 'asc' %}
+                <a href="{{ path(route, pagination.route_params|merge({'field': field, 'order': 'desc'})) }}" class="listing_link" style="text-decoration:none;white-space: nowrap;{{ sorted_style }}"><i class="glyphicon glyphicon-sort-by-attributes-alt"></i>&nbsp;{{ libelle }}</a>
+			{% else %}
+                <a href="{{ path(route, pagination.route_params|merge({'field': field, 'order': 'asc'})) }}" class="listing_link" style="text-decoration:none;white-space: nowrap;{{ sorted_style }}"><i class="glyphicon glyphicon-sort-by-attributes"></i>&nbsp;{{ libelle }}</a>
+            {% endif %}
+		</span>
+    {%- endspaceless -%}
 {%- endmacro %}
 
 {# Action boutons #}

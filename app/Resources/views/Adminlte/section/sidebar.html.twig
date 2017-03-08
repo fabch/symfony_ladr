@@ -11,50 +11,51 @@
         <!-- /.search form -->
 
         <!-- select operation form -->
-        <form action="#" method="post" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="{{ 'action.search'|trans }}">
-              <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-        </form>
+        {{ include(':Adminlte/section:sidebar-searchform.html.twig') }}
         <!-- /.search form -->
 
         <!-- sidebar menu: : style can be found in sidebar.less -->
         {% block sidebar_menu %}
             <ul class="sidebar-menu">
-                <li class="header">Navigation</li>
+                {#<li class="header">Navigation</li>#}
                 <li class="active">
-                    <a href="#">
-                        <i class="fa fa-dashboard"></i> <span>Tableau de bord</span></i>
-                    </a>
+                    <a href="{{ path('admin') }}#"><i class="fa fa-dashboard"></i> <span>Tableau de bord</span></a>
                 </li>
                 {#<li class="treeview">
                     <a href="#">
                         <i class="fa fa-building-o"></i>
-                        <span>{{ 'word.companies'|trans }}</span>
+                        <span>Agences</span>
                         <i class="fa fa-angle-left pull-right"></i>
                     </a>
                     <ul class="treeview-menu">
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}<li><a href="{{ path('company_index',{slug_type:'ladr'}) }}"><i class="fa fa-circle-o"></i> LADR</a></li>{% endif %}
-                        {% if is_granted('ROLE_SUPER_ADMIN') %}<li><a href="{{ path('company_index',{slug_type:'actia'}) }}"><i class="fa fa-circle-o"></i> ACTIA</a></li>{% endif %}
-                        {% if is_granted('ROLE_DISTRIBUTEUR') %}<li><a href="{{ path('company_index',{slug_type: 'distributeur'}) }}"><i class="fa fa-circle-o"></i> {{ 'word.succursales'|trans }}</a></li>{% endif %}
-                        {% if is_granted('ROLE_DISTRIBUTEUR') %}<li><a href="{{ path('company_index',{'slug_type':'distributeur','no_qualif':1}) }}"><i class="fa fa-circle-o"></i> {{ 'word.succursales'|trans }} non qualifiés</a></li>{% endif %}
-                        {% if is_granted('ROLE_AGENT') %}<li><a href="{{ path('company_index',{slug_type: 'client'}) }}"><i class="fa fa-circle-o"></i> {{ 'word.clients'|trans }}</a></li>{% endif %}
-                        {% if is_granted('ROLE_AGENT') %}<li><a href="{{ path('company_index',{slug_type: 'client','no_qualif':1}) }}"><i class="fa fa-circle-o"></i> {{ 'word.clients'|trans }} non qualifiés</a></li>{% endif %}
+                        <li><a href="{{ path('agences_index') }}"><i class="fa fa-circle-o"></i> REXEL</a></li>
                     </ul>
                 </li>
-                {% if is_granted('ROLE_ADMIN') %}
+                <li class="treeview">
+                    <a href="#">
+                        <i class="ion-person-stalker"></i>
+                        <span>Clients</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{ path('client_index') }}"><i class="fa fa-circle-o"></i> REXEL</a></li>
+                    </ul>
+                </li>#}
+                {% if is_granted('ROLE_SUPER_ADMIN') %}
+                    <li class="header">Paramétrage</li>
+                    <li><a href="{{ path('ladr_security_access_index') }}"><i class="fa fa-lock"></i> <span>Accès</span> </a></li>
+                    <li><a href="{{ path('ladr_contact_index') }}"><i class="fa fa-user"></i> <span>Contacts</span> </a></li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-envelope-o"></i> <span>Mailing</span> <i class="fa fa-angle-left pull-right"></i></a>
-&#123;&#35;                        <ul class="treeview-menu">
-                            <li><a href="{{ path('lexik_mailer.layout_list') }}"><i class="fa fa-list-alt"></i> Layouts</a></li>
+                        <ul class="treeview-menu">
+                            <li><a href="{{ path('lexik_mailer.layout_list') }}"><i class="fa fa-list-alt"></i> Thèmes</a></li>
                             <li><a href="{{ path('lexik_mailer.email_list') }}"><i class="fa fa-file-text-o"></i> Emails</a></li>
-                        </ul>&#35;&#125;
+                        </ul>
                     </li>
-                {% endif %}#}
+                    <li>
+                        <a href="{{ path('jmose_command_scheduler_list') }}"><i class="fa fa-heartbeat" aria-hidden="true"></i> <span>Crons</span></a>
+                    </li>
+                {% endif %}
             </ul>
         {% endblock sidebar_menu %}
         <!-- /sidebar menu: : style can be found in sidebar.less -->
