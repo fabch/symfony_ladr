@@ -1,0 +1,18 @@
+{% extends ':Adminlte/layout:base.html.twig' %}
+
+{% block body %}
+<div class="login-box">
+    <div class="login-logo">
+        <a href="{{ path('homepage') }}"><b>ADMINISTRATION</b> Pulse</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        {% block content %}
+            <p class="login-box-msg">Veuillez vous connecter pour<br/>ouvrir votre session</p>
+        {% endblock content %}
+
+    </div>
+    <!-- /.login-box-body -->
+</div>
+    <!-- /.login-box -->
+{% endblock %}
