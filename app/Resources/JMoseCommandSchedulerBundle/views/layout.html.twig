@@ -1,0 +1,29 @@
+{% extends '::admin.html.twig' %}
+{% trans_default_domain 'JMoseCommandScheduler' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('bundles/jmosecommandscheduler/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/jmosecommandscheduler/css/bootstrap-theme.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content_header %}
+    {% include 'JMoseCommandSchedulerBundle:Navbar:navbar.html.twig' %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('bundles/jmosecommandscheduler/js/bootstrap-confirmation.js') }}"></script>
+
+    <script type="text/javascript">
+        // Enable bootstrap-confirmation
+        $(document).ready(function () {
+            //$('[data-toggle="confirmation"]').confirmation();
+            $('[data-toggle="confirmation"]').confirmation({
+                singleton: true,
+                popout: true,
+                placement: 'left'
+            });
+        });
+    </script>
+{% endblock %}
