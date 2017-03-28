@@ -1,5 +1,5 @@
 {%- block extends -%}
-	{{- "{% extends 'admin.html.twig' %}" -}}
+	{{- "{% extends 'admin.html.twig' %}" }}
 	{{ "{% import ':Adminlte/widget:datatable.html.twig' as datatable_util %}" -}}
 {%- endblock extends %}
 
@@ -46,7 +46,7 @@
 				{% for row in fields|batch(3, false) -%}
 					<tr>
 						{%- for field, metadata in row %}
-							{% if row is not false %}
+							{% if row != false %}
 								{{ '{{ _self.filter_cell(' ~ key ~ ',"' ~ field ~ '"|trans) }}' }}
 							{% else %}
 								<td></td>
@@ -63,7 +63,7 @@
 	<div class="box">
 		<div class="box-header with-border">
 			<h3 class="box-title">{{ entity }}</h3>
-			{%- if ('new' in actions) and (not hide_edit) %}
+			{%- if ('new' in actions) and (not hide_edit|default(false)) %}
 			<div class="box-tools pull-right">
 				<a href="{{ "{{ path('" ~ route_name_prefix ~ "_new') }}" }}" class="btn btn-sm btn-primary">{{ "<i class=\"glyphicon glyphicon-plus\"></i> {{- 'Ajouter'|trans -}}" }}</a>
 			</div>
@@ -107,7 +107,7 @@
 
 					{%- elseif metadata.type in ['boolean'] %}
 
-						<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ "word.yes"|trans }}{% else %}{{ "word.no"|trans }}{% endif %}' }}</td>
+						<td>{{ '{% if ' ~ entity_singularized ~ '.' ~ field|replace({'_': ''}) ~ ' %}{{ "Oui"|trans }}{% else %}{{ "Non"|trans }}{% endif %}' }}</td>
 
 					{%- else %}
 
