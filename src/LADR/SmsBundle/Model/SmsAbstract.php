@@ -50,7 +50,7 @@ abstract class SmsAbstract implements SmsInterface
      * Liste de numéros de vos destinataires (tableau ou séparé par un retour à la ligne ou une virgule)
      * ex : +33600000000,003360-00-00-00 , 6 00 00 00 00
      *
-     * @var array $destinataires
+     * @var SmsRecipientInterface[] $destinataires
      *
      * @Assert\NotBlank(groups={"Default","Premium","Full"})
      */
@@ -190,7 +190,7 @@ abstract class SmsAbstract implements SmsInterface
      *
      * @return self
      */
-    public function setKey($key)
+    protected function setKey($key)
     {
         $this->key = $key;
 
@@ -222,7 +222,7 @@ abstract class SmsAbstract implements SmsInterface
      *
      * @return self
      */
-    public function setType($type)
+    protected function setType($type)
     {
         if (!SmsTypeEnum::isValid($type)) {
             throw new \LADR\SmsBundle\Exception\InvalidArgumentException(sprintf("Le type de SMS \"%s\" ne fait parti de la liste des valeurs autorisées : [%s]", $type, implode(', ', SmsTypeEnum::getAvailableValues())));
@@ -260,7 +260,7 @@ abstract class SmsAbstract implements SmsInterface
     /**
      * get destinataires
      *
-     * @return array
+     * @return SmsRecipientInterface[]
      */
     public function getDestinataires()
     {
@@ -270,7 +270,7 @@ abstract class SmsAbstract implements SmsInterface
     /**
      * set destinataires
      *
-     * @param array $destinataires
+     * @param SmsRecipientInterface[] $destinataires
      *
      * @return self
      */

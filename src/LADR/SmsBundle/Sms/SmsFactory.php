@@ -40,7 +40,7 @@ class SmsFactory
      */
     public function create()
     {
-        return new SmsEntity();
+        return new SmsEntity($this->key, $this->type);
     }
 
 }

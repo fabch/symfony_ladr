@@ -21,8 +21,8 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->variableNode('key')->isRequired()->end()
-                ->variableNode('type')->defaultValue('lowcost')->end()
+                ->variableNode('api_key')->isRequired()->end()
+                ->variableNode('sms_type')->defaultValue('lowcost')->end()
             ->end()
         ;
 

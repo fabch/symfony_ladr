@@ -1,22 +1,18 @@
 parameters:
-  ladr_sms.phone_formater.class: LADR\SmsBundle\Utils\PhoneFormater
   ladr_sms.sms_factory.class: LADR\SmsBundle\Sms\SmsFactory
   ladr_sms.sms_service.class: LADR\SmsBundle\Services\SmsService
   ladr_sms.entity.class: LADR\SmsBundle\Entity\SmsEntity
 
 services:
 
-    ladr_sms.phone_formater:
-        class: '%ladr_sms.phone_formater.class%'
-
     ladr_sms.sms_factory:
         class: '%ladr_sms.sms_factory.class%'
+        arguments: ['%ladr_sms.api_key%', '%ladr_sms.sms_type%']
 
     ladr_sms.entity:
         class:     '%ladr_sms.entity.class%'
         factory:   'ladr_sms.sms_factory:create'
-        arguments: ['@para']
 
     ladr_sms.sms_service:
         class: '%ladr_sms.sms_service.class%'
-        arguments: ['@doctrine.orm.entity_manager', '@ladr_sms.phone_formater','@event_dispatcher']
+        arguments: ['@doctrine.orm.entity_manager', '@libphonenumber.phone_number_util', '@event_dispatcher']

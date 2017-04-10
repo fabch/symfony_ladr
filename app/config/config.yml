@@ -67,8 +67,8 @@ doctrine:
         auto_mapping: true
 
 ladr_sms:
-    key: '%sms_key%'
-    type: 'premium'
+    api_key: '%sms_key%'
+    sms_type: 'premium'
 
 # Swiftmailer Configuration
 swiftmailer:

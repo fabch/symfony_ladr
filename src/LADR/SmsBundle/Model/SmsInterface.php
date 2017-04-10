@@ -21,15 +21,6 @@ interface SmsInterface
     public function getKey();
 
     /**
-     * set key
-     *
-     * @param string $key
-     *
-     * @return self
-     */
-    public function setKey($key);
-
-    /**
      * get type
      *
      * @return string
@@ -40,15 +31,6 @@ interface SmsInterface
      * @return array
      */
     public function getAvailableTypes();
-
-    /**
-     * set type
-     *
-     * @param string $type
-     *
-     * @return self
-     */
-    public function setType($type);
 
     /**
      * get message
@@ -67,16 +49,16 @@ interface SmsInterface
     public function setMessage($message);
 
     /**
-     * get destinataires
+     * get  destinataires
      *
-     * @return array
+     * @return SmsRecipientInterface[]
      */
     public function getDestinataires();
 
     /**
      * set destinataires
      *
-     * @param array $destinataires
+     * @param SmsRecipientInterface[] $destinataires
      *
      * @return self
      */

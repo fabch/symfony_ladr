@@ -17,6 +17,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new \Lexik\Bundle\MailerBundle\LexikMailerBundle(),
             new \JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
+            new Misd\PhoneNumberBundle\MisdPhoneNumberBundle(),
             new LADR\SmsBundle\LADRSmsBundle(),
             new AppBundle\AppBundle(),
         ];

@@ -15,5 +15,8 @@ parameters:
     mailer_user:       ~
     mailer_password:   ~
 
+    # A secret api key for https://www.spot-hit.fr/documentation-api
+    sms_key: ~
+
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
