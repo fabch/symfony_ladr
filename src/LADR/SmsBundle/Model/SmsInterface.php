@@ -6,6 +6,8 @@
  */
 namespace LADR\SmsBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Interface SmsInterface
  * @package LADR\SmsBundle\Model
@@ -18,7 +20,7 @@ interface SmsInterface
      *
      * @return string
      */
-    public function getKey();
+    public function getApiKey();
 
     /**
      * get type
@@ -30,7 +32,23 @@ interface SmsInterface
     /**
      * @return array
      */
-    public function getAvailableTypes();
+    public static function getAvailableTypes();
+
+    /**
+     * get spotHitId
+     *
+     * @return int
+     */
+    public function getSpotHitId();
+
+    /**
+     * set spotHitId
+     *
+     * @param int $spotHitId
+     *
+     * @return self
+     */
+    public function setSpotHitId($spotHitId);
 
     /**
      * get message
@@ -49,16 +67,50 @@ interface SmsInterface
     public function setMessage($message);
 
     /**
+     * get paramKeys
+     *
+     * @return array|string[]
+     */
+    public function getParamKeys();
+
+    /**
+     * set paramKeys
+     *
+     * @param array|string[] $paramKeys
+     *
+     * @return self
+     */
+    public function setParamKeys($paramKeys);
+
+    /**
+     * add paramKey
+     *
+     * @param string $paramKey
+     *
+     * @return self
+     */
+    public function addParamKey($paramKey);
+
+    /**
+     * add paramKey
+     *
+     * @param string $paramKey
+     *
+     * @return self
+     */
+    public function removeParamKey($paramKey);
+
+    /**
      * get  destinataires
      *
-     * @return SmsRecipientInterface[]
+     * @return Collection|SmsRecipientInterface[]
      */
     public function getDestinataires();
 
     /**
      * set destinataires
      *
-     * @param SmsRecipientInterface[] $destinataires
+     * @param Collection|SmsRecipientInterface[] $destinataires
      *
      * @return self
      */
@@ -81,20 +133,52 @@ interface SmsInterface
     public function setExpediteur($expediteur);
 
     /**
-     * get date
+     * get createdAt
      *
      * @return \Datetime
      */
-    public function getDate();
+    public function getCreatedAt();
 
     /**
-     * set date
+     * set createdAt
      *
-     * @param \Datetime $date
+     * @param \Datetime $createdAt
      *
      * @return self
      */
-    public function setDate($date);
+    public function setCreatedAt($createdAt);
+
+    /**
+     * get transmittedAt
+     *
+     * @return \Datetime|null
+     */
+    public function getTransmittedAt();
+
+    /**
+     * set transmittedAt
+     *
+     * @param \Datetime|null $transmittedAt
+     *
+     * @return self
+     */
+    public function setTransmittedAt($transmittedAt);
+
+    /**
+     * get scheduledAt
+     *
+     * @return \Datetime|null
+     */
+    public function getScheduledAt();
+
+    /**
+     * set scheduledAt
+     *
+     * @param \Datetime|null $scheduledAt
+     *
+     * @return self
+     */
+    public function setScheduledAt($scheduledAt);
 
     /**
      * is smslong
@@ -186,7 +270,7 @@ interface SmsInterface
     /**
      * @return array
      */
-    public function getAvailableDestinatairesTypes();
+    public static function getAvailableDestinatairesTypes();
 
     /**
      * set destinatairesType

@@ -34,18 +34,18 @@ interface SmsRecipientInterface
     /**
      * get phoneNumber
      *
-     * @return string
+     * @return \libphonenumber\PhoneNumber
      */
     public function getPhoneNumber();
 
     /**
      * set phoneNumber
      *
-     * @param string $phoneNumber
+     * @param \libphonenumber\PhoneNumber $phoneNumber
      *
      * @return self
      */
-    public function setPhoneNumber($phoneNumber);
+    public function setPhoneNumber(\libphonenumber\PhoneNumber $phoneNumber);
 
     /**
      * get status

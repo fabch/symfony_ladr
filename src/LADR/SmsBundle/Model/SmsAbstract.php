@@ -1,25 +1,33 @@
 <?php
 namespace LADR\SmsBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use LADR\SmsBundle\Utils\Enum\DestinatairesTypeEnum;
 use LADR\SmsBundle\Utils\Enum\SmsTypeEnum;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Class SmsAbstract
  * @package LADR\SmsBundle\Model
  * @see http://www.spot-hit.fr/documentation-api
+ *
+ * @UniqueEntity("spotHitId")
  */
 abstract class SmsAbstract implements SmsInterface
 {
     /**
      * Votre clé API d'identification
      *
-     * @var string $key
-     *
-     * @Assert\NotBlank(groups={"Default","Premium","Full"})
+     * @var string $apiKey
+     * @ORM\Column(type="string", length=32, nullable=false)
+     * @Assert\NotBlank(groups={"Premium","Full"})
+     * @Groups({"premium", "lowcost"})
      */
-    protected $key;
+    protected $apiKey;
 
     /**
      * Type de SMS : "premium" ou "lowcost"
@@ -30,29 +38,50 @@ abstract class SmsAbstract implements SmsInterface
      *
      * @var string $type
      *
+     * @ORM\Column(type="string", nullable=false)
      * @Assert\Choice(callback="getAvailableTypes")
-     * @Assert\NotNull(groups={"Default","Premium","Full"})
+     * @Assert\NotNull(groups={"Premium","Full"})
+     * @Groups({"premium", "lowcost"})
      */
     protected $type;
 
     /**
+     * Identifiant unique spotHit
+     *
+     * @var int $spotHitId
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $spotHitId;
+
+    /**
      * Limité à 160 caractères (ou voir paramètre smslong).
      * Attention : Les caractères "|", "^", "€", "}", "{", "[", "~", "]", "\" comptent doubles.
-     * SMS Personnalisé : {Nom de la colonne}, exemple : {Nom}
+     * SMS Personnalisé : Bonjour {nom} {prenom}, exemple : array("nom","prenom");
      *
      * @var string $message
-     *
-     * @Assert\NotBlank(groups={"Default","Premium","Full"})
+     * @ORM\Column(type="string", length=255, nullable=false)
+     * @Assert\NotBlank(groups={"Premium","Full"})
+     * @Groups({"premium", "lowcost"})
      */
     protected $message;
+
+    /**
+     * Listedes tokens utilisés pour les paramètres des sms personnalisés qui seront récupérés sur les destinataires
+     * SMS Personnalisé : {Nom de la colonne}, exemple : {Nom}
+     *
+     * @var array|string[] $message
+     * @ORM\Column(type="simple_array", nullable=true)
+     * @Assert\NotBlank(groups={"Premium","Full"})
+     */
+    protected $paramKeys;
 
     /**
      * Liste de numéros de vos destinataires (tableau ou séparé par un retour à la ligne ou une virgule)
      * ex : +33600000000,003360-00-00-00 , 6 00 00 00 00
      *
-     * @var SmsRecipientInterface[] $destinataires
-     *
-     * @Assert\NotBlank(groups={"Default","Premium","Full"})
+     * @var Collection|SmsRecipientInterface[] $destinataires
+     * @Assert\NotBlank(groups={"Premium","Full"})
+     * @Groups({"premium", "lowcost"})
      */
     protected $destinataires;
 
@@ -61,11 +90,28 @@ abstract class SmsAbstract implements SmsInterface
      * Si vide, l'expéditeur de votre SMS sera un numéro court à 5 chiffres auxquels vos destinataires peuvent répondre.
      *
      * @var string $expediteur
-     *
+     * @ORM\Column(type="string", length=11, nullable=true)
      * @Assert\NotBlank(groups={"Premium","Full"})
      * @Assert\Length(max="11", groups={"Premium","Full"})
+     * @Groups({"premium"})
      */
     protected $expediteur;
+
+    /**
+     * Date de création du sms dans la base de donnée
+     *
+     * @var \Datetime $createdAt
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    protected $createdAt;
+
+    /**
+     * Date d'envoi à l'api SpotHit
+     *
+     * @var \Datetime $transmittedAt
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $transmittedAt;
 
     /**
      * Optionnel
@@ -73,10 +119,11 @@ abstract class SmsAbstract implements SmsInterface
      * actuelle, le message sera envoyé immédiatement
      *
      * @var \Datetime $date
-     *
+     * @ORM\Column(type="datetime", nullable=true)
      * @Assert\NotBlank(groups={"Full"})
+     * @Groups({"premium", "lowcost"})
      */
-    protected $date;
+    protected $scheduledAt;
 
     /**
      * Optionnel
@@ -86,8 +133,9 @@ abstract class SmsAbstract implements SmsInterface
      * Maximum 5 SMS concaténés (soit 765 caractères).
      *
      * @var boolean $smslong
-     *
+     * @ORM\Column(type="boolean", nullable=true)
      * @Assert\NotBlank(groups={"Full"})
+     * @Groups({"premium"})
      */
     protected $smslong;
 
@@ -96,9 +144,7 @@ abstract class SmsAbstract implements SmsInterface
      * Permet de vérifier la taille du SMS long envoyé. Vous devez envoyer le nombre de SMS concaténés comme valeur. Si
      * notre compteur nous indique un nombre différent, votre message sera rejeté.
      *
-     * @var int $smslongnbr
-     *
-     * @Assert\NotBlank(groups={"Full"})
+     * @var int|null $smslongnbr
      */
     protected $smslongnbr;
 
@@ -108,7 +154,10 @@ abstract class SmsAbstract implements SmsInterface
      *
      * @var boolean $tronque
      *
+     * @ORM\Column(type="boolean", nullable=false)
+     *
      * @Assert\NotBlank(groups={"Full"})
+     * @Groups({"premium", "lowcost"})
      */
     protected $tronque;
 
@@ -119,8 +168,9 @@ abstract class SmsAbstract implements SmsInterface
      * ce paramètre).
      *
      * @var string $encodage
-     *
+     * @ORM\Column(type="string", nullable=false)
      * @Assert\NotBlank(groups={"Full"})
+     * @Groups({"premium", "lowcost"})
      */
     protected $encodage;
 
@@ -130,8 +180,9 @@ abstract class SmsAbstract implements SmsInterface
      * (maximum 255 caractères).
      *
      * @var string $nom
-     *
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(groups={"Full"})
+     * @Groups({"premium"})
      */
     protected $nom;
 
@@ -155,9 +206,10 @@ abstract class SmsAbstract implements SmsInterface
      * )
      *
      * @var string $destinatairesType
-     *
+     * @ORM\Column(type="string", length=255, nullable=false)
      * @Assert\Choice(callback="getAvailableDestinatairesTypes")
      * @Assert\NotNull(groups={"Full"})
+     * @Groups({"premium"})
      */
     protected $destinatairesType;
 
@@ -168,31 +220,40 @@ abstract class SmsAbstract implements SmsInterface
      * Si ce paramètre est renseigné, cette URL sera appelée pour cet envoi sinon l'adresse du compte est utilisée.
      *
      * @var string $url
-     *
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\NotBlank(groups={"Full"})
+     * @Groups({"premium"})
      */
     protected $url;
 
     /**
-     * get key
      *
-     * @return string
      */
-    public function getKey()
+    public function __construct()
     {
-        return $this->key;
+        $this->destinataires = new ArrayCollection();
     }
 
     /**
-     * set key
+     * get apiKey
      *
-     * @param string $key
+     * @return string
+     */
+    public function getApiKey()
+    {
+        return $this->apiKey;
+    }
+
+    /**
+     * set apiKey
+     *
+     * @param string $apiKey
      *
      * @return self
      */
-    protected function setKey($key)
+    protected function setApiKey($apiKey)
     {
-        $this->key = $key;
+        $this->apiKey = $apiKey;
 
         return $this;
     }
@@ -210,9 +271,33 @@ abstract class SmsAbstract implements SmsInterface
     /**
      * @return array
      */
-    public function getAvailableTypes()
+    public static function getAvailableTypes()
     {
         return SmsTypeEnum::getAvailableValues();
+    }
+
+    /**
+     * get spotHitId
+     *
+     * @return int
+     */
+    public function getSpotHitId()
+    {
+        return $this->spotHitId;
+    }
+
+    /**
+     * set spotHitId
+     *
+     * @param int $spotHitId
+     *
+     * @return self
+     */
+    public function setSpotHitId($spotHitId)
+    {
+        $this->spotHitId = $spotHitId;
+
+        return $this;
     }
 
     /**
@@ -258,9 +343,68 @@ abstract class SmsAbstract implements SmsInterface
     }
 
     /**
+     * get paramKeys
+     *
+     * @return array|string[]
+     */
+    public function getParamKeys()
+    {
+        return $this->paramKeys;
+    }
+
+    /**
+     * set paramKeys
+     *
+     * @param array|string[] $paramKeys
+     *
+     * @return self
+     */
+    public function setParamKeys($paramKeys)
+    {
+
+        $this->paramKeys = array_values(array_unique($paramKeys));
+        sort($this->paramKeys);
+        return $this;
+    }
+
+    /**
+     * add paramKey
+     *
+     * @param string $paramKey
+     *
+     * @return self
+     */
+    public function addParamKey($paramKey)
+    {
+        if(($key = array_search($paramKey, $this->paramKeys)) === false) {
+            $this->paramKeys[] = $paramKey;
+        }
+        sort($this->paramKeys);
+
+        return $this->paramKeys;
+    }
+
+    /**
+     * add paramKey
+     *
+     * @param string $paramKey
+     *
+     * @return self
+     */
+    public function removeParamKey($paramKey)
+    {
+        if(($key = array_search($paramKey, $this->paramKeys)) !== false) {
+            unset($this->paramKeys[$key]);
+        }
+        sort($this->paramKeys);
+
+        return $this->paramKeys;
+    }
+
+    /**
      * get destinataires
      *
-     * @return SmsRecipientInterface[]
+     * @return Collection|SmsRecipientInterface[]
      */
     public function getDestinataires()
     {
@@ -270,7 +414,31 @@ abstract class SmsAbstract implements SmsInterface
     /**
      * set destinataires
      *
-     * @param SmsRecipientInterface[] $destinataires
+     * @param SmsRecipientInterface $destinataire
+     *
+     * @return self
+     */
+    public function addDestinataire($destinataire)
+    {
+        $this->destinataires->add($destinataire);
+
+        return $this;
+    }
+
+    /**
+     * get destinataires
+     *
+     * @return SmsRecipientInterface
+     */
+    public function removeDestinataire($destinataire)
+    {
+        return $this->destinataires->removeElement($destinataire);
+    }
+
+    /**
+     * set destinataires
+     *
+     * @param Collection|SmsRecipientInterface[] $destinataires
      *
      * @return self
      */
@@ -306,25 +474,83 @@ abstract class SmsAbstract implements SmsInterface
     }
 
     /**
-     * get date
+     * get createdAt
      *
      * @return \Datetime
      */
-    public function getDate()
+    public function getCreatedAt()
     {
-        return $this->date;
+        return $this->createdAt;
+    }
+
+    /**
+     * set createdAt
+     *
+     * @param \Datetime $createdAt
+     *
+     * @return self
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * get transmittedAt
+     *
+     * @return \Datetime|null
+     */
+    public function getTransmittedAt()
+    {
+        return $this->transmittedAt;
+    }
+
+    /**
+     * set transmittedAt
+     *
+     * @param \Datetime|null $transmittedAt
+     *
+     * @return self
+     */
+    public function setTransmittedAt($transmittedAt)
+    {
+        $this->transmittedAt = $transmittedAt;
+
+        return $this;
+    }
+
+    /**
+     * get transmittedAt
+     *
+     * @return \Datetime|null
+     */
+    public function isTransmitted()
+    {
+        return $this->transmittedAt !== null;
+    }
+
+    /**
+     * get $scheduledAt
+     *
+     * @return \Datetime|null
+     */
+    public function getScheduledAt()
+    {
+        return $this->scheduledAt;
     }
 
     /**
      * set date
      *
-     * @param \Datetime $date
+     * @param \Datetime|null $scheduledAt
      *
      * @return self
      */
-    public function setDate($date)
+    public function setScheduledAt($scheduledAt)
     {
-        $this->date = $date;
+        $this->scheduledAt = $scheduledAt;
 
         return $this;
     }
@@ -462,7 +688,7 @@ abstract class SmsAbstract implements SmsInterface
     /**
      * @return array
      */
-    public function getAvailableDestinatairesTypes()
+    public static function getAvailableDestinatairesTypes()
     {
         return DestinatairesTypeEnum::getAvailableValues();
     }
@@ -509,6 +735,5 @@ abstract class SmsAbstract implements SmsInterface
 
         return $this;
     }
-
 
 }
