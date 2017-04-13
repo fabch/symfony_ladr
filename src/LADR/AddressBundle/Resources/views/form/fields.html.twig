@@ -1,0 +1,95 @@
+{# app/Resources/views/form/fields.html.twig #}
+{% block wrapper_attr -%}
+    {%- for attrname, attrvalue in wrapper_attr -%}
+        {%- if attrname not in ['class'] -%}
+            {{- " " -}}
+            {%- if attrname in ['placeholder', 'title'] -%}
+                {{- attrname }}="{{ attrvalue|trans({}, translation_domain) }}"
+            {%- elseif attrvalue is same as(true) -%}
+                {{- attrname }}="{{ attrname }}"
+            {%- elseif attrvalue is not same as(false) -%}
+                {{- attrname }}="{{ attrvalue }}"
+            {%- endif -%}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock wrapper_attr %}
+
+
+{# Permet d'afficher un bouton d'ajout d'adresse #}
+{% block addresses_row %}
+    <div class="form-group{% if (not compound or force_error|default(false)) and not valid %} has-error{% endif %}">
+        {{- form_label(form) -}}
+        {{- form_errors(form) -}}
+        {% set attr = attr|merge({'class': attr.class|default('row')}) %}
+        {{- form_widget(form) -}}
+        {%- if allow_add is defined and allow_add is same as(true) and prototype is defined -%}
+            <div class="col-md-4">
+                <a href="#{{ id }}"
+                   class="btn btn-primary btn-block"
+                   data-addfield="collection"
+                   data-prototype-name="{{ prototype.vars.name }}"
+                   data-prototype="{{- form_row(prototype)|escape -}}"
+                   data-collection="{{ id }}"
+                        ><i class="glyphicon glyphicon-plus"></i>{{ 'action.add.address'|trans({},'LADRAddressBundle') }}</a>
+            </div>
+        {%- endif -%}
+    </div>
+{% endblock %}
+
+{% block addresses_widget %}
+    {{- block('form_widget') -}}
+{% endblock addresses_widget %}
+
+{% block address_multiple %}
+    {% spaceless %}
+        <div class="entry_row {{ entry_class|default( form.parent.vars.name ~ '_entry') }} col-md-4">
+            <div class="well">
+                <div class="form-group form-group-sm {{ errors|length > 0 ? 'has-error' : '' }}">
+                    {% set attr = attr|merge({'class': attr.class|default('')}) %}
+                    <div class="btn-group btn-xs pull-right" style="margin-top: -20px;margin-right:-20px; padding:0">
+                        {%- if form.parent.vars['allow_duplicate'] is same as(true) and form.parent.vars['allow_add'] is same as(true) -%}
+                            <a href="#"
+                               class="btn btn-primary btn-xs"
+                               data-duplicatefield="collection"
+                               data-entry-id="{{- id -}}"
+                               data-entry-name="{{- full_name -}}"
+                               data-collection="{{ form.parent.vars.id }}"
+                               data-toggle="tooltip"
+                               title="Dupliquer"
+                               style="line-height: 16px;padding: 1px 3px;"
+                                    ><i class="glyphicon glyphicon-copy"></i></a>
+                        {%- endif -%}
+                        {% if form.parent.vars['allow_delete'] is same as(true) %}
+                            <a class="btn btn-default btn-xs"
+                               href="#"
+                               data-removefield="collection"
+                               data-collection="{{ form.parent.vars.id }}"
+                               data-toggle="tooltip"
+                               title="Supprimer"
+                               style="line-height: 16px;padding: 1px 3px;"
+                                    ><i class="glyphicon glyphicon-remove"></i></a>
+                        {% endif %}
+                    </div>
+                    {{- form_errors(form) -}}
+                    {{- block('form_widget') -}}
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock address_multiple %}
+
+{% block address_row %}
+    {% if 'addresses' in form.parent.vars.block_prefixes %}
+        {{  block('address_multiple') }}
+    {% else %}
+        {{- block('form_widget') -}}
+    {% endif %}
+{% endblock %}
+
+{% block address_widget %}
+    {% if 'addresses' in form.parent.vars.block_prefixes %}
+        {{  block('address_multiple') }}
+    {% else %}
+        {{- block('form_widget') -}}
+    {% endif %}
+{% endblock %}

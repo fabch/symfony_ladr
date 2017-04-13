@@ -19,8 +19,9 @@ class AppKernel extends Kernel
             new \JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
             new \LADR\SecurityBundle\LADRSecurityBundle(),
             new \LADR\ContactBundle\LADRContactBundle(),
+            new \LADR\ToolBundle\LADRToolBundle(),
+            new \LADR\AddressBundle\LADRAddressBundle(),
             new AppBundle\AppBundle(),
-            new LADR\ToolBundle\LADRToolBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

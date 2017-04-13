@@ -1,0 +1,21 @@
+services:
+    ladr.mapping.listener:
+        class: LADR\AddressBundle\EventListener\DynamicAddressSubscriber
+        arguments: ['@service_container']
+        tags:
+          - { name: doctrine.event_listener, event: loadClassMetadata }
+
+    ladr.form.type.address.minimal:
+          class: LADR\AddressBundle\Form\Type\MinimalAddressType
+          tags:
+              - { name: form.type }
+
+    ladr.form.type.address:
+          class: LADR\AddressBundle\Form\Type\AddressType
+          tags:
+              - { name: form.type }
+
+    ladr.form.type.addresses:
+        class: LADR\AddressBundle\Form\Type\AddressesType
+        tags:
+            - { name: form.type }
