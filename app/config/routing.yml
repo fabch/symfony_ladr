@@ -9,7 +9,7 @@ jmose_command_scheduler:
     prefix:   /admin
 
 ladr_contact:
-    resource: "@AppBundle/Controller/ContactController.php"
+    resource: "@LADRContactBundle/Controller/ContactController.php"
     prefix:   /admin
     type:     annotation
 
