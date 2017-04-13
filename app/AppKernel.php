@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new \LADR\SecurityBundle\LADRSecurityBundle(),
             new \LADR\ContactBundle\LADRContactBundle(),
             new AppBundle\AppBundle(),
+            new LADR\ToolBundle\LADRToolBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

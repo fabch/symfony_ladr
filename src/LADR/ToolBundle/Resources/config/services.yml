@@ -1,0 +1,8 @@
+parameters:
+    ladr.form.type.collection_duplicate.class: LADR\ToolBundle\Form\Type\LADRCollectionDuplicateType
+
+services:
+    ladr.form.type.collection_duplicate:
+        class: '%ladr.form.type.collection_duplicate.class%'
+        tags:
+            - { name: form.type }
