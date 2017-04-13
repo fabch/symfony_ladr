@@ -1,0 +1,33 @@
+{% block extends %}
+    {{- "{% extends 'admin.html.twig' %}" -}}
+{% endblock extends %}
+
+{% block body %}
+{{ "{% block content_header %}" }}
+    <h1>{{ "{{ 'Ajouter'|trans}}" }} {{ entity }}</h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> {{ "{{ 'Administration'|trans }}" }}</a></li>
+        <li><a href="{{ "{{ path('" ~ route_name_prefix ~ "_index') }}" }}">{{ entity }}</a></li>
+        <li class="active">{{ "{{ 'Ajouter'|trans }}" }}</li>
+    </ol>
+{{ "{% endblock content_header %}" }}
+
+{{ "{% block content_inner %}" }}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{ "{{ 'Ajouter'|trans }}" }} {{ entity }}</h3>
+    </div>
+    <!-- /.box-header -->
+    {{ '{{ form_start(form) }}' }}
+    <div class="box-body">
+        {{ '{{ form_widget(form) }}' }}
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer with-border">
+        <button type="submit" class="btn btn-primary pull-right">{{ "{{ 'Ajouter'|trans }}" }}</button>
+    </div>
+    <!-- /.box-footer -->
+    {{ '{{ form_end(form) }}' }}
+</div>
+{{ "{% endblock content_inner %}" }}
+{% endblock body %}
