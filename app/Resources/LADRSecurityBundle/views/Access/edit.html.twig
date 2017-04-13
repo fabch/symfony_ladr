@@ -14,6 +14,7 @@
         <div class="box-footer with-border">
             <button type="submit" class="btn btn-primary pull-right">{{ 'Modifier'|trans }}</button>
         </div>
+        {% do form.submit.setRendered() %}
         <!-- /.box-footer -->
         {{ form_end(form) }}
     </div>

@@ -10,9 +10,14 @@ logout:
     path: /logout
 
 ladr_security:
-    resource: "@LADRSecurityBundle/Controller/"
+    resource: "@LADRSecurityBundle/Controller/SecurityController.php"
+    type:     annotation
+
+ladr_access:
+    resource: "@LADRSecurityBundle/Controller/AccessController.php"
+    prefix:   /admin
     type:     annotation
 
 app:
-    resource: "@AppBundle/Controller/"
+    resource: "@AppBundle/Controller/DefaultController.php"
     type:     annotation

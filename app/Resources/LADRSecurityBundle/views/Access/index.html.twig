@@ -28,7 +28,6 @@
             <tr>
                 <th>#</th>
                 <th>Username</th>
-                <th>Contact</th>
                 <th>Roles</th>
                 <th>Ajouté le</th>
                 <th>Actif ?</th>
@@ -40,13 +39,6 @@
             <tr>
                 <td><a href="{{ path('ladr_security_access_edit', { 'id': access.id }) }}">{{ access.id }}</a></td>
                 <td>{{ access.username }}</td>
-                <td>
-                    {%- if access.contact is not null %}
-                        <a href="{{ path('ladr_contact_show',{ id: access.contact.id }) }}">{{ access.contact.fullName }}</a>
-                    {% else %}
-                        ~
-                    {% endif -%}
-                </td>
                 <td>
                     <ul style="font-size:70%">
                         {% for role in access.roles %}

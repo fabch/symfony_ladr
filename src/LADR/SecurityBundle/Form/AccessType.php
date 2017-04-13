@@ -61,11 +61,6 @@ class AccessType extends AbstractType
 
         $builder
             ->add('username', TextType::class)
-            ->add('contact', EntityType::class,array(
-                'class' => 'AppBundle\Entity\Contact',
-                'choice_label' => 'fullName',
-                'required' => false
-            ))
             ->add('roles', ChoiceType::class, array(
                 'choices'  => array_combine(array_values($availablesRoles), array_values($availablesRoles)),
                 'multiple' => true,
@@ -84,18 +79,6 @@ class AccessType extends AbstractType
     }
 
     protected function getAvailableRoles(){
-
-        return array(
-            'ROLE_ALLOWED_TO_SWITCH',
-            'ROLE_USER',
-            'ROLE_CLIENT',
-            'ROLE_DISTRIBUTEUR',
-            'ROLE_EUROPOLE',
-            'ROLE_COMMERCIAL',
-            'ROLE_DIRECTEUR_REGIONAL',
-            'ROLE_ADMIN',
-            'ROLE_SUPER_ADMIN'
-        );
         $roleHierarchy = new RoleHierarchy($this->roles);
         $roles = $roleHierarchy->getReachableRoles(array_map(function($role){ return new Role($role); }, $this->getAccess()->getRoles() ?: array() ));
         return array_map(function(Role $role) { return $role->getRole(); }, $roles);
