@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new \Lexik\Bundle\MailerBundle\LexikMailerBundle(),
             new \JMose\CommandSchedulerBundle\JMoseCommandSchedulerBundle(),
             new \LADR\SecurityBundle\LADRSecurityBundle(),
+            new \LADR\ContactBundle\LADRContactBundle(),
             new AppBundle\AppBundle(),
         ];
 

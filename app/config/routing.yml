@@ -18,6 +18,11 @@ ladr_access:
     prefix:   /admin
     type:     annotation
 
+ladr_contact:
+    resource: "@LADRContactBundle/Controller/ContactController.php"
+    prefix:   /admin
+    type:     annotation
+
 app:
     resource: "@AppBundle/Controller/DefaultController.php"
     type:     annotation
