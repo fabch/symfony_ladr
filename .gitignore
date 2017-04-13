@@ -18,5 +18,6 @@
 /app/Resources/translations/*
 !app/Resources/translations/.gitkeep
 .DS_Store
+/composer.lock
 /dump
 /web/phpinfo.php
