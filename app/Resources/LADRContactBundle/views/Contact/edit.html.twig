@@ -1,0 +1,34 @@
+{% extends 'admin.html.twig' %}
+
+{% block content_header %}
+<h1>{{ 'Modifier'|trans }} Contact</h1>
+<ol class="breadcrumb">
+    <li><a href="#"><i class="fa fa-dashboard"></i> {{ 'Administration'|trans }}</a></li>
+    <li><a href="{{ path('ladr_contact_index') }}">Contact</a></li>
+    <li class="active">{{ 'Modifier'|trans }}</li>
+</ol>
+{% endblock content_header %}
+
+{% block content_inner %}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">{{ 'Ajouter'|trans }} Contact</h3>
+        <div class="box-tools pull-right">
+            {{ form_start(delete_form) }}
+            <button type="button" class="btn btn-error btn-box-tool" title="{{ 'Supprimer'|trans }}"><i class="fa fa-times"></i></button>
+            {{ form_end(delete_form) }}
+        </div>
+    </div>
+    <!-- /.box-header -->
+    {{ form_start(form) }}
+    <div class="box-body">
+        {{ form_widget(form) }}
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer with-border">
+        <button type="submit" class="btn btn-primary pull-right">{{ 'Modifier'|trans }}</button>
+    </div>
+    <!-- /.box-footer -->
+    {{ form_end(form) }}
+</div>
+{% endblock content_inner %}

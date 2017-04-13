@@ -8,10 +8,11 @@ jmose_command_scheduler:
     resource: "@JMoseCommandSchedulerBundle/Resources/config/routing.yml"
     prefix:   /admin
 
-app_contact:
+ladr_contact:
     resource: "@AppBundle/Controller/ContactController.php"
+    prefix:   /admin
     type:     annotation
 
 app:
-    resource: "@AppBundle/Controller/"
+    resource: "@AppBundle/Controller/DefaultController.php"
     type:     annotation

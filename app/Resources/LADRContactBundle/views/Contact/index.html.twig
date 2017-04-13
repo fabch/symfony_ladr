@@ -66,7 +66,7 @@
                 <h3 class="box-title">Contact</h3>
 
                 <div class="box-tools pull-right">
-                    <a href="{{ path('contacts_new') }}" class="btn btn-sm btn-primary"><i
+                    <a href="{{ path('ladr_contact_new') }}" class="btn btn-sm btn-primary"><i
                                 class="glyphicon glyphicon-plus"></i> {{- 'Ajouter'|trans -}}</a>
                 </div>
             </div>
@@ -87,7 +87,7 @@
                 <tbody>
                 {% for contact in contacts %}
                     <tr>
-                        <td><a href="{{ path('contacts_show', { 'id': contact.id }) }}">{{ contact.id }}</a></td>
+                        <td><a href="{{ path('ladr_contact_show', { 'id': contact.id }) }}">{{ contact.id }}</a></td>
                         <td>{{ contact.firstName }}</td>
                         <td>{{ contact.lastName }}</td>
                         <td>{{ contact.email }}</td>
@@ -97,8 +97,8 @@
                         <td align="right">
                             <div class="btn-group">
                                 {{ datatable_util.listing_row_action([
-                                { 'link': path('contacts_show', { 'id':contact.id}), 'title':'<i class="glyphicon glyphicon-asterisk"></i> ' ~ 'action.show'|trans },
-                                { 'link': path('contacts_edit', { 'id':contact.id}), 'title':'<i class="glyphicon glyphicon-asterisk"></i> ' ~ 'action.edit'|trans }
+                                { 'link': path('ladr_contact_show', { 'id':contact.id}), 'title':'<i class="glyphicon glyphicon-asterisk"></i> ' ~ 'action.show'|trans },
+                                { 'link': path('ladr_contact_edit', { 'id':contact.id}), 'title':'<i class="glyphicon glyphicon-asterisk"></i> ' ~ 'action.edit'|trans }
                                 ]) }}
                             </div>
                         </td>

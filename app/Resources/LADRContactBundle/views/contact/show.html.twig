@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block content_header %}
+    <h1>{{ 'Visualiser'|trans }} Contact</h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> {{ 'Administration'|trans }}</a></li>
+        <li><a href="{{ path('ladr_contact_index') }}">Contact</a></li>
+        <li class="active">{{ 'Visualiser'|trans }}</li>
+    </ol>
+{% endblock content_header %}
+
+
+{% block content_inner %}
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Contact</h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <table width="100%" class="table table-striped">
+            <tbody>
+                <tr>
+                    <th>Id</th>
+                        <td>{{ contact.id }}</td>
+                </tr>
+                <tr>
+                    <th>Firstname</th>
+                        <td>{{ contact.firstName }}</td>
+                </tr>
+                <tr>
+                    <th>Lastname</th>
+                        <td>{{ contact.lastName }}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                        <td>{{ contact.email }}</td>
+                </tr>
+                <tr>
+                    <th>Mobile</th>
+                        <td>{{ contact.mobile }}</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                        <td>{{ contact.phone }}</td>
+                </tr>
+                <tr>
+                    <th>Createdat</th>
+                        <td>{% if contact.createdAt %}{{ contact.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer with-border">
+        <a class="btn-primary btn" href="{{ path('ladr_contact_edit', { 'id': contact.id }) }}">{{ 'Modifier'|trans }}</a>
+    </div>
+    <!-- /.box-footer -->
+</div>
+{% endblock content_inner %}
+

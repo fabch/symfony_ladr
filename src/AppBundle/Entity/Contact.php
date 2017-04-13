@@ -26,13 +26,6 @@ class Contact extends ContactAbstract implements ContactInterface
     protected $id;
 
     /**
-     * Constructor
-     */
-    public function __construct(){
-        $this->accesses = new ArrayCollection();
-    }
-
-    /**
      * @ORM\PrePersist
      */
     public function prePersistHandler(LifecycleEventArgs $eventArgs) {
