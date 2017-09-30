@@ -1,0 +1,29 @@
+{%- set small_box = {
+color: small_box.color|default(''),
+class: small_box.class|default(''),
+icon_class: small_box.icon_class|default('ion ion-ios-gear-outline'),
+value: small_box.value|default(''),
+title: small_box.title|default(''),
+url: small_box.url|default(''),
+url_text: small_box.url_text|default(''),
+} -%}
+<div class="small-box {{ small_box.color|trim }} {{ small_box.class|trim }}">
+
+    {% block small_box_inner %}
+    <div class="inner">
+        <h3>{{ small_box.value|trim }}</h3>
+        <p>{{ small_box.title|trim }}</p>
+    </div>
+    {% endblock small_box_inner %}
+
+    {% block small_box_icon %}
+    <div class="icon">
+        <i class="{{ small_box.icon_class|trim }}"></i>
+    </div>
+    {% endblock small_box_icon %}
+
+    {% block small_box_link %}
+    <a href="{{ small_box.url|trim }}" class="small-box-footer">{{ small_box.url_text|trim }} <i class="fa fa-arrow-circle-right"></i></a>
+    {% endblock small_box_link %}
+
+</div>

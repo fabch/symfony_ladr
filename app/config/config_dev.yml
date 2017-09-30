@@ -32,3 +32,15 @@ monolog:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+parameters:
+    database_host: 127.0.0.1
+    database_port: 3306
+    database_name: insidetv
+    database_user: root
+    database_password: guygeek291273
+    mailer_transport: smtp
+    mailer_host: 'localhost:1025'
+    mailer_user: 'admin@insidetv.dev'
+    mailer_password: null
+    log_path: /var/www/insidetv.dev/var/logs
+    session_path: '%kernel.root_dir%/../var/sessions/%kernel.environment%'
